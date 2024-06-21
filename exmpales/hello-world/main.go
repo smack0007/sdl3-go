@@ -20,4 +20,19 @@ func main() {
 		fmt.Println("Failed to create window.")
 		os.Exit(1)
 	}
+
+	defer sdl.DestroyWindow(window)
+
+	sdl.GetWindowSurface(window)
+	sdl.UpdateWindowSurface(window)
+
+	done := false
+	for !done {
+		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+			switch event.(type) {
+			case sdl.QuitEvent:
+				done = true
+			}
+		}
+	}
 }

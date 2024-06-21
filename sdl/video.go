@@ -36,6 +36,8 @@ const (
 	WINDOWPOS_CENTERED = int(C.SDL_WINDOWPOS_CENTERED)
 )
 
+type Surface C.SDL_Surface
+
 type Window C.SDL_Window
 
 func CreateWindow(
@@ -54,4 +56,16 @@ func CreateWindow(
 		C.int(h),
 		C.Uint32(flags),
 	)))
+}
+
+func DestroyWindow(window *Window) {
+	C.SDL_DestroyWindow((*C.SDL_Window)(unsafe.Pointer(window)))
+}
+
+func GetWindowSurface(window *Window) *Surface {
+	return (*Surface)(unsafe.Pointer(C.SDL_GetWindowSurface((*C.SDL_Window)(unsafe.Pointer(window)))))
+}
+
+func UpdateWindowSurface(window *Window) int {
+	return int(C.SDL_UpdateWindowSurface((*C.SDL_Window)(unsafe.Pointer(window))))
 }
