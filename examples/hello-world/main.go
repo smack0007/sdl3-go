@@ -26,12 +26,36 @@ func main() {
 	sdl.GetWindowSurface(window)
 	sdl.UpdateWindowSurface(window)
 
+	event := sdl.Event{}
 	done := false
 	for !done {
-		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
-			switch event.(type) {
-			case sdl.QuitEvent:
+		for sdl.PollEvent(&event) > 0 {
+			switch event.Type() {
+
+			case sdl.QUIT:
 				done = true
+				break
+
+			case sdl.WINDOWEVENT:
+				{
+					windowEvent := event.Window()
+					switch windowEvent.Event() {
+					case sdl.WINDOWEVENT_ENTER:
+						fmt.Println("Enter")
+						break
+
+					case sdl.WINDOWEVENT_LEAVE:
+						fmt.Println("Leave")
+						break
+					}
+				}
+				break
+
+			case sdl.KEYDOWN:
+				{
+					keyboardEvent := event.Key()
+					fmt.Println(keyboardEvent.Keysym())
+				}
 			}
 		}
 	}
