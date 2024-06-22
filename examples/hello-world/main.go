@@ -34,28 +34,18 @@ func main() {
 
 			case sdl.QUIT:
 				done = true
-				break
 
 			case sdl.WINDOWEVENT:
-				{
-					windowEvent := event.Window()
-					switch windowEvent.Event() {
-					case sdl.WINDOWEVENT_ENTER:
-						fmt.Println("Enter")
-						break
+				switch event.Window.Event() {
+				case sdl.WINDOWEVENT_ENTER:
+					fmt.Println("Enter")
 
-					case sdl.WINDOWEVENT_LEAVE:
-						fmt.Println("Leave")
-						break
-					}
+				case sdl.WINDOWEVENT_LEAVE:
+					fmt.Println("Leave")
 				}
-				break
 
 			case sdl.KEYDOWN:
-				{
-					keyboardEvent := event.Key()
-					fmt.Println(keyboardEvent.Keysym())
-				}
+				fmt.Println(event.Key.Keysym())
 			}
 		}
 	}

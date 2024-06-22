@@ -48,10 +48,21 @@ const (
 /*
  * Event
  */
+type WindowEvent struct{ data []byte }
+type KeyboardEvent struct{ data []byte }
 
 type Event struct {
 	event C.SDL_Event
 	data  []byte
+
+	Window WindowEvent
+	Key    KeyboardEvent
+}
+
+func updateData(event *Event, newData []byte) {
+	event.data = newData
+	event.Window.data = newData
+	event.Key.data = newData
 }
 
 func (event Event) Type() EventType {
@@ -61,14 +72,6 @@ func (event Event) Type() EventType {
 /*
  * WindowEvent
  */
-
-type WindowEvent struct {
-	data []byte
-}
-
-func (event Event) Window() WindowEvent {
-	return WindowEvent{event.data}
-}
 
 func (event WindowEvent) Type() EventType {
 	return EventType(readUint32(event.data, C.offsetof_SDL_CommonEvent_type))
@@ -97,14 +100,6 @@ func (event WindowEvent) Data2() int32 {
 /*
  * KeyboardEvent
  */
-
-type KeyboardEvent struct {
-	data []byte
-}
-
-func (event Event) Key() KeyboardEvent {
-	return KeyboardEvent{event.data}
-}
 
 func (event KeyboardEvent) Type() EventType {
 	return EventType(readUint32(event.data, C.offsetof_SDL_CommonEvent_type))
@@ -138,9 +133,9 @@ func PollEvent(event *Event) int {
 	result := int(C.SDL_PollEvent((*C.SDL_Event)(unsafe.Pointer(&event.event))))
 
 	if result != 0 {
-		event.data = C.GoBytes(unsafe.Pointer(&event.event), C.sizeof_SDL_Event)
+		updateData(event, C.GoBytes(unsafe.Pointer(&event.event), C.sizeof_SDL_Event))
 	} else {
-		event.data = nil
+		updateData(event, nil)
 	}
 
 	return result
