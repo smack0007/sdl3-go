@@ -49,6 +49,15 @@ func main() {
 
 			case sdl.KEYUP:
 				fmt.Println("Key Up", event.Key.Keysym())
+
+			case sdl.MOUSEMOTION:
+				fmt.Println("Mouse Motion", event.Motion.X(), event.Motion.Y())
+
+			case sdl.MOUSEBUTTONDOWN:
+				fmt.Println("Mouse Button Down", event.Button.Button())
+
+			case sdl.MOUSEBUTTONUP:
+				fmt.Println("Mouse Button Up", event.Button.Button())
 			}
 		}
 	}
