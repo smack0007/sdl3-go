@@ -45,7 +45,10 @@ func main() {
 				}
 
 			case sdl.KEYDOWN:
-				fmt.Println(event.Key.Keysym())
+				fmt.Println("Key Down", event.Key.Keysym())
+
+			case sdl.KEYUP:
+				fmt.Println("Key Up", event.Key.Keysym())
 			}
 		}
 	}
