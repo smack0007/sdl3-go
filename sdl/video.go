@@ -7,6 +7,9 @@ import (
 	"unsafe"
 )
 
+type Surface C.SDL_Surface
+
+type Window C.SDL_Window
 type WindowFlags uint32
 type WindowEventID uint8
 
@@ -59,10 +62,6 @@ const (
 	WINDOWPOS_CENTERED = int(C.SDL_WINDOWPOS_CENTERED)
 )
 
-type Surface C.SDL_Surface
-
-type Window C.SDL_Window
-
 func CreateWindow(
 	title string,
 	x int,
@@ -71,8 +70,11 @@ func CreateWindow(
 	h int,
 	flags WindowFlags,
 ) *Window {
+	cTitle := C.CString(title)
+	defer C.free(unsafe.Pointer(cTitle))
+
 	return (*Window)(unsafe.Pointer(C.SDL_CreateWindow(
-		C.CString(title),
+		cTitle,
 		C.int(x),
 		C.int(y),
 		C.int(w),
@@ -87,6 +89,16 @@ func DestroyWindow(window *Window) {
 
 func GetWindowSurface(window *Window) *Surface {
 	return (*Surface)(unsafe.Pointer(C.SDL_GetWindowSurface((*C.SDL_Window)(unsafe.Pointer(window)))))
+}
+
+func SetWindowTitle(window *Window, title string) {
+	cTitle := C.CString(title)
+	defer C.free(unsafe.Pointer(cTitle))
+
+	C.SDL_SetWindowTitle(
+		(*C.SDL_Window)(unsafe.Pointer(window)),
+		cTitle,
+	)
 }
 
 func UpdateWindowSurface(window *Window) int {

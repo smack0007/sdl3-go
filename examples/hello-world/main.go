@@ -14,17 +14,24 @@ func main() {
 	}
 	defer sdl.Quit()
 
-	window := sdl.CreateWindow("Hello World!", sdl.WINDOWPOS_CENTERED, sdl.WINDOWPOS_CENTERED, 800, 600, sdl.WINDOW_SHOWN)
+	var window *sdl.Window
+	var renderer *sdl.Renderer
+	result := sdl.CreateWindowAndRenderer(800, 600, sdl.WINDOW_SHOWN, &window, &renderer)
 
-	if window == nil {
-		fmt.Println("Failed to create window.")
+	if result != 0 {
+		fmt.Println("Failed to create window and renderer.")
 		os.Exit(1)
 	}
 
 	defer sdl.DestroyWindow(window)
+	defer sdl.DestroyRenderer(renderer)
 
-	sdl.GetWindowSurface(window)
-	sdl.UpdateWindowSurface(window)
+	sdl.SetWindowTitle(window, "Hello World!")
+
+	sdl.RenderClear(renderer)
+	sdl.RenderPresent(renderer)
+
+	fmt.Println("Initialized.")
 
 	event := sdl.Event{}
 	done := false
@@ -61,4 +68,6 @@ func main() {
 			}
 		}
 	}
+
+	fmt.Println("Shuting down...")
 }
