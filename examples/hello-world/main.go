@@ -28,7 +28,56 @@ func main() {
 
 	sdl.SetWindowTitle(window, "Hello World!")
 
+	sdl.SetRenderDrawColor(renderer, 100, 149, 237, 255)
 	sdl.RenderClear(renderer)
+
+	sdl.SetRenderDrawColor(renderer, 255, 0, 0, 255)
+
+	points := []sdl.Point{
+		sdl.Point{X: 0, Y: 0},
+		sdl.Point{X: 1, Y: 0},
+		sdl.Point{X: 2, Y: 0},
+		sdl.Point{X: 3, Y: 0},
+		sdl.Point{X: 4, Y: 0},
+		sdl.Point{X: 5, Y: 0},
+
+		sdl.Point{X: 0, Y: 1},
+		sdl.Point{X: 1, Y: 1},
+		sdl.Point{X: 2, Y: 1},
+		sdl.Point{X: 3, Y: 1},
+		sdl.Point{X: 4, Y: 1},
+		sdl.Point{X: 5, Y: 1},
+
+		sdl.Point{X: 0, Y: 2},
+		sdl.Point{X: 1, Y: 2},
+		sdl.Point{X: 2, Y: 2},
+		sdl.Point{X: 3, Y: 2},
+		sdl.Point{X: 4, Y: 2},
+		sdl.Point{X: 5, Y: 2},
+
+		sdl.Point{X: 0, Y: 3},
+		sdl.Point{X: 1, Y: 3},
+		sdl.Point{X: 2, Y: 3},
+		sdl.Point{X: 3, Y: 3},
+		sdl.Point{X: 4, Y: 3},
+		sdl.Point{X: 5, Y: 3},
+
+		sdl.Point{X: 0, Y: 4},
+		sdl.Point{X: 1, Y: 4},
+		sdl.Point{X: 2, Y: 4},
+		sdl.Point{X: 3, Y: 4},
+		sdl.Point{X: 4, Y: 4},
+		sdl.Point{X: 5, Y: 4},
+
+		sdl.Point{X: 0, Y: 5},
+		sdl.Point{X: 1, Y: 5},
+		sdl.Point{X: 2, Y: 5},
+		sdl.Point{X: 3, Y: 5},
+		sdl.Point{X: 4, Y: 5},
+		sdl.Point{X: 5, Y: 5},
+	}
+	sdl.RenderDrawPoints(renderer, points, 36)
+
 	sdl.RenderPresent(renderer)
 
 	fmt.Println("Initialized.")
