@@ -28,6 +28,51 @@ func main() {
 
 	sdl.SetWindowTitle(window, "Hello World!")
 
+	fmt.Println("Initialized.")
+
+	event := sdl.Event{}
+	done := false
+	for !done {
+		for sdl.PollEvent(&event) > 0 {
+			switch event.Type() {
+
+			case sdl.QUIT:
+				done = true
+
+			case sdl.WINDOWEVENT:
+				switch event.Window.Event() {
+				case sdl.WINDOWEVENT_ENTER:
+					fmt.Println("Enter")
+
+				case sdl.WINDOWEVENT_LEAVE:
+					fmt.Println("Leave")
+				}
+
+			case sdl.KEYDOWN:
+				fmt.Println("Key Down", event.Key.Keysym())
+
+			case sdl.KEYUP:
+				fmt.Println("Key Up", event.Key.Keysym())
+
+			case sdl.MOUSEMOTION:
+				fmt.Println("Mouse Motion", event.Motion.X(), event.Motion.Y())
+
+			case sdl.MOUSEBUTTONDOWN:
+				fmt.Println("Mouse Button Down", event.Button.Button())
+
+			case sdl.MOUSEBUTTONUP:
+				fmt.Println("Mouse Button Up", event.Button.Button())
+			}
+		}
+
+		draw(renderer)
+		sdl.Delay(1)
+	}
+
+	fmt.Println("Shuting down...")
+}
+
+func draw(renderer *sdl.Renderer) {
 	sdl.SetRenderDrawColor(renderer, 100, 149, 237, 255)
 	sdl.RenderClear(renderer)
 
@@ -79,44 +124,4 @@ func main() {
 	sdl.RenderDrawPoints(renderer, points, 36)
 
 	sdl.RenderPresent(renderer)
-
-	fmt.Println("Initialized.")
-
-	event := sdl.Event{}
-	done := false
-	for !done {
-		for sdl.PollEvent(&event) > 0 {
-			switch event.Type() {
-
-			case sdl.QUIT:
-				done = true
-
-			case sdl.WINDOWEVENT:
-				switch event.Window.Event() {
-				case sdl.WINDOWEVENT_ENTER:
-					fmt.Println("Enter")
-
-				case sdl.WINDOWEVENT_LEAVE:
-					fmt.Println("Leave")
-				}
-
-			case sdl.KEYDOWN:
-				fmt.Println("Key Down", event.Key.Keysym())
-
-			case sdl.KEYUP:
-				fmt.Println("Key Up", event.Key.Keysym())
-
-			case sdl.MOUSEMOTION:
-				fmt.Println("Mouse Motion", event.Motion.X(), event.Motion.Y())
-
-			case sdl.MOUSEBUTTONDOWN:
-				fmt.Println("Mouse Button Down", event.Button.Button())
-
-			case sdl.MOUSEBUTTONUP:
-				fmt.Println("Mouse Button Up", event.Button.Button())
-			}
-		}
-	}
-
-	fmt.Println("Shuting down...")
 }
