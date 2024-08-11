@@ -2,6 +2,28 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "type": "process",
+      "command": "go",
+      "args": ["build", "-o", "./bin/sdl-go", "./sdl"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
       "label": "Run Hello World",
       "group": {
         "kind": "none",
@@ -15,7 +37,7 @@
         "showReuseMessage": false,
         "clear": true
       },
-      "type": "shell",
+      "type": "process",
       "command": "go",
       "args": ["run", "examples/hello-world/main.go"],
       "options": {
@@ -40,7 +62,7 @@
         "showReuseMessage": false,
         "clear": true
       },
-      "type": "shell",
+      "type": "process",
       "command": "go",
       "args": ["run", "tools/sdlinfo/main.go"],
       "options": {

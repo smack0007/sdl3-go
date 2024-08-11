@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	SDL "github.com/smack0007/sdl_go/sdl"
+	SDL "github.com/smack0007/sdl-go/sdl"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 	}
 	defer SDL.Quit()
 
-	SDL.LogSetPriority(SDL.LOG_CATEGORY_APPLICATION, SDL.LOG_PRIORITY_DEBUG);
+	SDL.LogSetPriority(SDL.LOG_CATEGORY_APPLICATION, SDL.LOG_PRIORITY_DEBUG)
 
 	var window *SDL.Window
 	var renderer *SDL.Renderer

@@ -1,3 +1,3 @@
-module github.com/smack0007/sdl_go
+module github.com/smack0007/sdl-go
 
-go 1.22.4
+go 1.22.5

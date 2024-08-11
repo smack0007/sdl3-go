@@ -31,6 +31,13 @@ func DestroyRenderer(renderer *Renderer) {
 	C.SDL_DestroyRenderer((*C.SDL_Renderer)(unsafe.Pointer(renderer)))
 }
 
+func FillRect(renderer *Renderer, rect *Rect) int {
+	return (int)(C.SDL_RenderFillRect(
+		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+		(*C.SDL_Rect)(unsafe.Pointer(rect)),
+	))
+}
+
 func GetRenderDrawColor(renderer *Renderer, r *uint8, g *uint8, b *uint8, a *uint8) int {
 	return int(C.SDL_GetRenderDrawColor(
 		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -44,6 +51,16 @@ func GetRenderDrawColor(renderer *Renderer, r *uint8, g *uint8, b *uint8, a *uin
 func RenderClear(renderer *Renderer) int {
 	return (int)(C.SDL_RenderClear(
 		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+	))
+}
+
+func RenderDrawLine(renderer *Renderer, x1 int, y1 int, x2 int, y2 int) int {
+	return (int)(C.SDL_RenderDrawLine(
+		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+		C.int(x1),
+		C.int(y1),
+		C.int(x2),
+		C.int(y2),
 	))
 }
 
