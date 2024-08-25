@@ -16,8 +16,8 @@ const (
 	INIT_EVERYTHING     = uint32(C.SDL_INIT_EVERYTHING)
 )
 
-func Init(flags uint32) int {
-	return int(C.SDL_Init(C.Uint32(flags)))
+func Init(flags uint32) error {
+	return mapErrorCode(int(C.SDL_Init(C.Uint32(flags))))
 }
 
 func Quit() {

@@ -69,11 +69,11 @@ func CreateWindow(
 	w int,
 	h int,
 	flags WindowFlags,
-) *Window {
+) (*Window, error) {
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
 
-	return (*Window)(unsafe.Pointer(C.SDL_CreateWindow(
+	result := (*Window)(unsafe.Pointer(C.SDL_CreateWindow(
 		cTitle,
 		C.int(x),
 		C.int(y),
@@ -81,14 +81,17 @@ func CreateWindow(
 		C.int(h),
 		C.Uint32(flags),
 	)))
+
+	return result, mapErrorPointer(result)
 }
 
 func DestroyWindow(window *Window) {
 	C.SDL_DestroyWindow((*C.SDL_Window)(unsafe.Pointer(window)))
 }
 
-func GetWindowSurface(window *Window) *Surface {
-	return (*Surface)(unsafe.Pointer(C.SDL_GetWindowSurface((*C.SDL_Window)(unsafe.Pointer(window)))))
+func GetWindowSurface(window *Window) (*Surface, error) {
+	result := (*Surface)(unsafe.Pointer(C.SDL_GetWindowSurface((*C.SDL_Window)(unsafe.Pointer(window)))))
+	return result, mapErrorPointer(result)
 }
 
 func SetWindowTitle(window *Window, title string) {

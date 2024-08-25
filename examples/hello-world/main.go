@@ -7,20 +7,20 @@ import (
 )
 
 func main() {
-	if SDL.Init(SDL.INIT_VIDEO) != 0 {
-		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed initialize SDL.")
+	err := SDL.Init(SDL.INIT_VIDEO)
+
+	if err != nil {
+		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed initialize SDL: %s", err)
 		os.Exit(1)
 	}
 	defer SDL.Quit()
 
 	SDL.LogSetPriority(SDL.LOG_CATEGORY_APPLICATION, SDL.LOG_PRIORITY_DEBUG)
 
-	var window *SDL.Window
-	var renderer *SDL.Renderer
-	result := SDL.CreateWindowAndRenderer(800, 600, SDL.WINDOW_SHOWN, &window, &renderer)
+	window, renderer, err := SDL.CreateWindowAndRenderer(800, 600, SDL.WINDOW_SHOWN)
 
-	if result != 0 {
-		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed to create window and renderer.")
+	if err != nil {
+		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed to create window and renderer: %s", err)
 		os.Exit(1)
 	}
 
