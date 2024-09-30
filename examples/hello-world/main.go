@@ -31,17 +31,16 @@ func main() {
 
 	SDL.LogInfo(SDL.LOG_CATEGORY_APPLICATION, "Initialized.")
 
-	event := SDL.Event{}
 	done := false
 	for !done {
-		for SDL.PollEvent(&event) > 0 {
+		for event := SDL.PollEvent(); event != nil; event = SDL.PollEvent() {
 			switch event.Type() {
 
 			case SDL.QUIT:
 				done = true
 
 			case SDL.WINDOWEVENT:
-				switch event.Window.Event() {
+				switch event.Window().Event() {
 				case SDL.WINDOWEVENT_ENTER:
 					SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Enter")
 
@@ -50,19 +49,19 @@ func main() {
 				}
 
 			case SDL.KEYDOWN:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Down %d", event.Key.Keysym())
+				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Down %d", event.Key().Keysym())
 
 			case SDL.KEYUP:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Up %d", event.Key.Keysym())
+				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Up %d", event.Key().Keysym())
 
 			case SDL.MOUSEMOTION:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Motion (%d, %d)", event.Motion.X(), event.Motion.Y())
+				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Motion (%d, %d)", event.Motion().X(), event.Motion().Y())
 
 			case SDL.MOUSEBUTTONDOWN:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Down %d", event.Button.Button())
+				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Down %d", event.Button().Button())
 
 			case SDL.MOUSEBUTTONUP:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Up %d", event.Button.Button())
+				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Up %d", event.Button().Button())
 			}
 		}
 
