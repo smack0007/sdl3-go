@@ -16,8 +16,8 @@
         "clear": true
       },
       "type": "process",
-      "command": "go",
-      "args": ["build", "-o", "./bin/sdl-go", "./sdl"],
+      "command": "make",
+      "args": ["build"],
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -38,12 +38,9 @@
         "clear": true
       },
       "type": "process",
-      "command": "go",
-      "args": ["run", "examples/hello-world/main.go"],
+      "command": "make",
+      "args": ["run-hello-world"],
       "options": {
-        "env": {
-          "GDK_BACKEND": "wayland"
-        },
         "cwd": "${workspaceFolder}"
       },
       "problemMatcher": ["$go"]
@@ -63,8 +60,8 @@
         "clear": true
       },
       "type": "process",
-      "command": "go",
-      "args": ["run", "tools/sdlinfo/main.go"],
+      "command": "make",
+      "args": ["run-sdlinfo"],
       "options": {
         "cwd": "${workspaceFolder}"
       },
