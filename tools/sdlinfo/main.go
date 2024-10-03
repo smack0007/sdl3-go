@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-
 	var version SDL.Version
 	SDL.GetVersion(&version)
 	fmt.Printf("SDL Version: %d.%d.%d\n", version.Major, version.Minor, version.Patch)
