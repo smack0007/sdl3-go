@@ -7,11 +7,15 @@ import (
 )
 
 func main() {
+	os.Exit(run());
+}
+
+func run() int {
 	err := SDL.Init(SDL.INIT_VIDEO)
 
 	if err != nil {
 		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed initialize SDL: %s", err)
-		os.Exit(1)
+		return 1
 	}
 	defer SDL.Quit()
 
@@ -21,7 +25,7 @@ func main() {
 
 	if err != nil {
 		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed to create window and renderer: %s", err)
-		os.Exit(1)
+		return 1
 	}
 
 	defer SDL.DestroyWindow(window)
@@ -70,6 +74,7 @@ func main() {
 	}
 
 	SDL.LogInfo(SDL.LOG_CATEGORY_APPLICATION, "Shuting down...")
+	return 0
 }
 
 func draw(renderer *SDL.Renderer) {
