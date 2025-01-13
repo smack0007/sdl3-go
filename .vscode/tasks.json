@@ -41,7 +41,10 @@
       "command": "make",
       "args": ["run-hello-world"],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "GDK_BACKEND": "wayland"
+        }
       },
       "problemMatcher": ["$go"]
     },
