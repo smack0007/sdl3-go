@@ -1,12 +1,11 @@
 name: CI
 on:
   push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 env:
-  # For tput
   CI: 1
-  TERM: xterm
 jobs:
   ci:
     runs-on: ubuntu-latest

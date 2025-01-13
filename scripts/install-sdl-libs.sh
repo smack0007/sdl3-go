@@ -3,7 +3,7 @@ set -e
 
 SCRIPT_DIRECTORY="$(dirname "$(realpath "${BASH_SOURCE[-1]}")")"
 TMP_DIR="./tmp"
-SDL_TAG="release-2.30.8"
+SDL_TAG="preview-3.1.8"
 
 cd ${SCRIPT_DIRECTORY}
 
@@ -11,6 +11,6 @@ cd ${SCRIPT_DIRECTORY}
 git clone --depth 1 --branch ${SDL_TAG} https://github.com/libsdl-org/SDL.git ${TMP_DIR}/SDL
 mkdir ${TMP_DIR}/SDL/build
 cd ${TMP_DIR}/SDL/build
-../configure
-make -j8
-sudo make install
+cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake --build . --config Release --parallel
+sudo cmake --install . --config Release
