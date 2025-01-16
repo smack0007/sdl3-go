@@ -1,6 +1,6 @@
 package sdl
 
-//#include "SDL_go.h"
+//#include "sdl.h"
 import "C"
 
 type InitFlags uint32

@@ -1,6 +1,6 @@
 package sdl
 
-//#include "SDL_go.h"
+//#include "scancode.h"
 import "C"
 
 type Scancode uint32

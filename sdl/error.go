@@ -1,6 +1,6 @@
 package sdl
 
-//#include "SDL_go.h"
+//#include "error.h"
 import "C"
 
 import (
@@ -9,14 +9,6 @@ import (
 
 func mapErrorBool(result bool) error {
 	if result {
-		return nil
-	}
-
-	return GetError()
-}
-
-func mapErrorCode(code int) error {
-	if code >= 0 {
 		return nil
 	}
 

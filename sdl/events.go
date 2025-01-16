@@ -1,7 +1,7 @@
 package sdl
 
 /*
-#include "SDL_go.h"
+#include "events.h"
 
 SDL_Event _event;
 

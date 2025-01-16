@@ -1,6 +1,6 @@
 package sdl
 
-//#include "SDL_go.h"
+//#include "rect.h"
 import "C"
 
 const ()

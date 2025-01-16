@@ -1,6 +1,6 @@
 package sdl
 
-//#include "SDL_go.h"
+//#include "version.h"
 import "C"
 
 const ()

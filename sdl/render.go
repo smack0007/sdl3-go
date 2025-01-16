@@ -1,6 +1,6 @@
 package sdl
 
-//#include "SDL_go.h"
+//#include "render.h"
 import "C"
 
 import (

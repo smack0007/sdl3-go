@@ -1,6 +1,6 @@
 package sdl
 
-//#include "SDL_go.h"
+//#include "timer.h"
 import "C"
 
 const ()

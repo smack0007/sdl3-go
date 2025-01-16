@@ -1,4 +1,4 @@
-#include <SDL3/SDL.h>
+#include "sdl-go.h"
 
 #define offsetof_SDL_CommonEvent_type offsetof(SDL_CommonEvent, type)
 #define offsetof_SDL_CommonEvent_timestamp offsetof(SDL_CommonEvent, timestamp)
@@ -31,4 +31,3 @@
 #define offsetof_SDL_MouseButtonEvent_clicks offsetof(SDL_MouseButtonEvent, clicks)
 #define offsetof_SDL_MouseButtonEvent_x offsetof(SDL_MouseButtonEvent, x)
 #define offsetof_SDL_MouseButtonEvent_y offsetof(SDL_MouseButtonEvent, y)
-
