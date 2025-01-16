@@ -1,3 +1,5 @@
+#include <SDL3/SDL.h>
+
 static inline void _SDL_Log(const char *str)
 {
   SDL_Log("%s", str);

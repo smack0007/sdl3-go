@@ -3,21 +3,21 @@ package sdl
 //#include "SDL_go.h"
 import "C"
 
+type InitFlags uint32
+
 const (
-	INIT_TIMER          = uint32(C.SDL_INIT_TIMER)
-	INIT_AUDIO          = uint32(C.SDL_INIT_AUDIO)
-	INIT_VIDEO          = uint32(C.SDL_INIT_VIDEO)
-	INIT_JOYSTICK       = uint32(C.SDL_INIT_JOYSTICK)
-	INIT_HAPTIC         = uint32(C.SDL_INIT_HAPTIC)
-	INIT_GAMECONTROLLER = uint32(C.SDL_INIT_GAMECONTROLLER)
-	INIT_EVENTS         = uint32(C.SDL_INIT_EVENTS)
-	INIT_NOPARACHUTE    = uint32(C.SDL_INIT_NOPARACHUTE)
-	INIT_SENSOR         = uint32(C.SDL_INIT_SENSOR)
-	INIT_EVERYTHING     = uint32(C.SDL_INIT_EVERYTHING)
+	INIT_AUDIO    InitFlags = C.SDL_INIT_AUDIO
+	INIT_VIDEO    InitFlags = C.SDL_INIT_VIDEO
+	INIT_JOYSTICK InitFlags = C.SDL_INIT_JOYSTICK
+	INIT_HAPTIC   InitFlags = C.SDL_INIT_HAPTIC
+	INIT_GAMEPAD  InitFlags = C.SDL_INIT_GAMEPAD
+	INIT_EVENTS   InitFlags = C.SDL_INIT_EVENTS
+	INIT_SENSOR   InitFlags = C.SDL_INIT_SENSOR
+	INIT_CAMERA   InitFlags = C.SDL_INIT_CAMERA
 )
 
-func Init(flags uint32) error {
-	return mapErrorCode(int(C.SDL_Init(C.Uint32(flags))))
+func Init(flags InitFlags) error {
+	return mapErrorBool(bool(C.SDL_Init(C.Uint32(flags))))
 }
 
 func Quit() {

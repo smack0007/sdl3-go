@@ -1,15 +1,20 @@
+#include <SDL3/SDL.h>
+
 #define offsetof_SDL_CommonEvent_type offsetof(SDL_CommonEvent, type)
 #define offsetof_SDL_CommonEvent_timestamp offsetof(SDL_CommonEvent, timestamp)
 
 #define offsetof_SDL_WindowEvent_windowID offsetof(SDL_WindowEvent, windowID)
-#define offsetof_SDL_WindowEvent_event offsetof(SDL_WindowEvent, event)
 #define offsetof_SDL_WindowEvent_data1 offsetof(SDL_WindowEvent, data1)
 #define offsetof_SDL_WindowEvent_data2 offsetof(SDL_WindowEvent, data2)
 
 #define offsetof_SDL_KeyboardEvent_windowID offsetof(SDL_KeyboardEvent, windowID)
-#define offsetof_SDL_KeyboardEvent_state offsetof(SDL_KeyboardEvent, state)
+#define offsetof_SDL_KeyboardEvent_which offsetof(SDL_KeyboardEvent, which)
+#define offsetof_SDL_KeyboardEvent_scancode offsetof(SDL_KeyboardEvent, scancode)
+#define offsetof_SDL_KeyboardEvent_key offsetof(SDL_KeyboardEvent, key)
+#define offsetof_SDL_KeyboardEvent_mod offsetof(SDL_KeyboardEvent, mod)
+#define offsetof_SDL_KeyboardEvent_raw offsetof(SDL_KeyboardEvent, raw)
+#define offsetof_SDL_KeyboardEvent_down offsetof(SDL_KeyboardEvent, down)
 #define offsetof_SDL_KeyboardEvent_repeat offsetof(SDL_KeyboardEvent, repeat)
-#define offsetof_SDL_KeyboardEvent_keysym offsetof(SDL_KeyboardEvent, keysym)
 
 #define offsetof_SDL_MouseMotionEvent_windowID offsetof(SDL_MouseMotionEvent, windowID)
 #define offsetof_SDL_MouseMotionEvent_which offsetof(SDL_MouseMotionEvent, which)
@@ -26,3 +31,4 @@
 #define offsetof_SDL_MouseButtonEvent_clicks offsetof(SDL_MouseButtonEvent, clicks)
 #define offsetof_SDL_MouseButtonEvent_x offsetof(SDL_MouseButtonEvent, x)
 #define offsetof_SDL_MouseButtonEvent_y offsetof(SDL_MouseButtonEvent, y)
+

@@ -2,7 +2,6 @@ package sdl
 
 //#include "SDL_go.h"
 import "C"
-import "unsafe"
 
 const ()
 
@@ -14,6 +13,6 @@ func GetRevision() string {
 	return C.GoString(C.SDL_GetRevision())
 }
 
-func GetVersion(ver *Version) {
-	C.SDL_GetVersion((*C.SDL_version)(unsafe.Pointer(ver)))
+func GetVersion() int {
+	return int(C.SDL_GetVersion())
 }

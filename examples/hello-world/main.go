@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	os.Exit(run());
+	os.Exit(run())
 }
 
 func run() int {
@@ -19,9 +19,9 @@ func run() int {
 	}
 	defer SDL.Quit()
 
-	SDL.LogSetPriority(SDL.LOG_CATEGORY_APPLICATION, SDL.LOG_PRIORITY_DEBUG)
+	SDL.SetLogPriority(SDL.LOG_CATEGORY_APPLICATION, SDL.LOG_PRIORITY_DEBUG)
 
-	window, renderer, err := SDL.CreateWindowAndRenderer(800, 600, SDL.WINDOW_SHOWN)
+	window, renderer, err := SDL.CreateWindowAndRenderer("Hello World!", 800, 600, SDL.WINDOW_OCCLUDED)
 
 	if err != nil {
 		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed to create window and renderer: %s", err)
@@ -40,32 +40,32 @@ func run() int {
 		for event := SDL.PollEvent(); event != nil; event = SDL.PollEvent() {
 			switch event.Type() {
 
-			case SDL.QUIT:
+			case SDL.EVENT_QUIT:
 				done = true
 
-			case SDL.WINDOWEVENT:
-				switch event.Window().Event() {
-				case SDL.WINDOWEVENT_ENTER:
-					SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Enter")
+				// case SDL.WINDOWEVENT:
+				// 	switch event.Window().Event() {
+				// 	case SDL.WINDOWEVENT_ENTER:
+				// 		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Enter")
 
-				case SDL.WINDOWEVENT_LEAVE:
-					SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Leave")
-				}
+				// 	case SDL.WINDOWEVENT_LEAVE:
+				// 		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Leave")
+				// 	}
 
-			case SDL.KEYDOWN:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Down %d", event.Key().Keysym())
+				// case SDL.KEYDOWN:
+				// 	SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Down %d", event.Key().Keysym())
 
-			case SDL.KEYUP:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Up %d", event.Key().Keysym())
+				// case SDL.KEYUP:
+				// 	SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Up %d", event.Key().Keysym())
 
-			case SDL.MOUSEMOTION:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Motion (%d, %d)", event.Motion().X(), event.Motion().Y())
+				// case SDL.MOUSEMOTION:
+				// 	SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Motion (%d, %d)", event.Motion().X(), event.Motion().Y())
 
-			case SDL.MOUSEBUTTONDOWN:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Down %d", event.Button().Button())
+				// case SDL.MOUSEBUTTONDOWN:
+				// 	SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Down %d", event.Button().Button())
 
-			case SDL.MOUSEBUTTONUP:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Up %d", event.Button().Button())
+				// case SDL.MOUSEBUTTONUP:
+				// 	SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Up %d", event.Button().Button())
 			}
 		}
 
@@ -83,7 +83,7 @@ func draw(renderer *SDL.Renderer) {
 
 	SDL.SetRenderDrawColor(renderer, 255, 0, 0, 255)
 
-	points := []SDL.Point{
+	points := []SDL.FPoint{
 		{X: 0, Y: 0},
 		{X: 1, Y: 0},
 		{X: 2, Y: 0},
@@ -126,7 +126,7 @@ func draw(renderer *SDL.Renderer) {
 		{X: 4, Y: 5},
 		{X: 5, Y: 5},
 	}
-	SDL.RenderDrawPoints(renderer, points, 36)
+	SDL.RenderPoints(renderer, points, 36)
 
 	SDL.RenderPresent(renderer)
 }

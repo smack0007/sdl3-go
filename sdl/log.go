@@ -21,16 +21,18 @@ const (
 	LOG_CATEGORY_RENDER      int = C.SDL_LOG_CATEGORY_RENDER
 	LOG_CATEGORY_INPUT       int = C.SDL_LOG_CATEGORY_INPUT
 	LOG_CATEGORY_TEST        int = C.SDL_LOG_CATEGORY_TEST
+	LOG_CATEGORY_GPU         int = C.SDL_LOG_CATEGORY_GPU
 	LOG_CATEGORY_CUSTOM      int = C.SDL_LOG_CATEGORY_CUSTOM
 
 	// SDL_LogPriority
+	LOG_PRIORITY_INVALID  LogPriority = C.SDL_LOG_PRIORITY_INVALID
+	LOG_PRIORITY_TRACE    LogPriority = C.SDL_LOG_PRIORITY_TRACE
 	LOG_PRIORITY_VERBOSE  LogPriority = C.SDL_LOG_PRIORITY_VERBOSE
 	LOG_PRIORITY_DEBUG    LogPriority = C.SDL_LOG_PRIORITY_DEBUG
 	LOG_PRIORITY_INFO     LogPriority = C.SDL_LOG_PRIORITY_INFO
 	LOG_PRIORITY_WARN     LogPriority = C.SDL_LOG_PRIORITY_WARN
 	LOG_PRIORITY_ERROR    LogPriority = C.SDL_LOG_PRIORITY_ERROR
 	LOG_PRIORITY_CRITICAL LogPriority = C.SDL_LOG_PRIORITY_CRITICAL
-	NUM_LOG_PRIORITIES    LogPriority = C.SDL_NUM_LOG_PRIORITIES
 )
 
 func Log(str string, args ...interface{}) {
@@ -77,8 +79,8 @@ func LogError(
 	C._SDL_LogError(C.int(category), cStr)
 }
 
-func LogGetPriority(category int) LogPriority {
-	return LogPriority(C.SDL_LogGetPriority(C.int(category)))
+func GetLogPriority(category int) LogPriority {
+	return LogPriority(C.SDL_GetLogPriority(C.int(category)))
 }
 
 func LogInfo(
@@ -106,25 +108,21 @@ func LogMessage(
 	C._SDL_LogMessage(C.int(category), C.SDL_LogPriority(priority), cStr)
 }
 
-func LogResetPriorities() {
-	C.SDL_LogResetPriorities()
+func ResetLogPriorities() {
+	C.SDL_ResetLogPriorities()
 }
 
-func LogSetAllPriority(
+func SetLogPriorities(
 	priority LogPriority,
 ) {
-	C.SDL_LogSetAllPriority(C.SDL_LogPriority(priority))
+	C.SDL_SetLogPriorities(C.SDL_LogPriority(priority))
 }
 
-// TODO: Implement LogSetOutputFunction.
-// func LogSetOutputFunction() {
-// }
-
-func LogSetPriority(
+func SetLogPriority(
 	category int,
 	priority LogPriority,
 ) {
-	C.SDL_LogSetPriority(C.int(category), C.SDL_LogPriority(priority))
+	C.SDL_SetLogPriority(C.int(category), C.SDL_LogPriority(priority))
 }
 
 func LogVerbose(

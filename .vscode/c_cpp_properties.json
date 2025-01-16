@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Linux",
-      "includePath": ["${workspaceFolder}/**", "/usr/include/SDL2"],
+      "includePath": ["${workspaceFolder}/**", "/usr/local/include"],
       "defines": [],
       "compilerPath": "/usr/bin/gcc",
       "cStandard": "c17",

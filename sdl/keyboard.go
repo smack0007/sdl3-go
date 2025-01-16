@@ -15,8 +15,8 @@ type Keysym struct {
 
 func createKeysym(data []byte) Keysym {
 	return Keysym{
-		Scancode: Scancode(readUint32(data, C.offsetof_SDL_Keysym_scancode)),
-		Sym:      Keycode(readInt32(data, C.offsetof_SDL_Keysym_sym)),
-		Mod:      Keymod(readUint16(data, C.offsetof_SDL_Keysym_mod)),
+		// Scancode: Scancode(readUint32(data, C.offsetof_SDL_Keysym_scancode)),
+		// Sym:      Keycode(readInt32(data, C.offsetof_SDL_Keysym_sym)),
+		// Mod:      Keymod(readUint16(data, C.offsetof_SDL_Keysym_mod)),
 	}
 }
