@@ -12,6 +12,7 @@ type Surface C.SDL_Surface
 type Window C.SDL_Window
 type WindowFlags uint32
 type WindowEventID uint8
+type WindowID uint32
 
 const (
 	WINDOW_FULLSCREEN          WindowFlags = C.SDL_WINDOW_FULLSCREEN

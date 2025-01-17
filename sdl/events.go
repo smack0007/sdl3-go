@@ -165,8 +165,8 @@ func (event WindowEvent) Timestamp() uint32 {
 	return readUint32(event, C.offsetof_SDL_CommonEvent_timestamp)
 }
 
-func (event WindowEvent) WindowID() uint32 {
-	return readUint32(event, C.offsetof_SDL_WindowEvent_windowID)
+func (event WindowEvent) WindowID() WindowID {
+	return WindowID(readUint32(event, C.offsetof_SDL_WindowEvent_windowID))
 }
 
 func (event WindowEvent) Data1() int32 {
@@ -195,8 +195,36 @@ func (event KeyboardEvent) Timestamp() uint32 {
 	return readUint32(event, C.offsetof_SDL_CommonEvent_timestamp)
 }
 
-func (event KeyboardEvent) WindowID() uint32 {
-	return readUint32(event, C.offsetof_SDL_KeyboardEvent_windowID)
+func (event KeyboardEvent) WindowID() WindowID {
+	return WindowID(readUint32(event, C.offsetof_SDL_KeyboardEvent_windowID))
+}
+
+func (event KeyboardEvent) Which() KeyboardID {
+	return KeyboardID(readUint32(event, C.offsetof_SDL_KeyboardEvent_which))
+}
+
+func (event KeyboardEvent) Scancode() Scancode {
+	return Scancode(readUint32(event, C.offsetof_SDL_KeyboardEvent_scancode))
+}
+
+func (event KeyboardEvent) Key() Keycode {
+	return Keycode(readInt32(event, C.offsetof_SDL_KeyboardEvent_key))
+}
+
+func (event KeyboardEvent) Mod() Keycode {
+	return Keycode(readInt32(event, C.offsetof_SDL_KeyboardEvent_mod))
+}
+
+func (event KeyboardEvent) Raw() uint16 {
+	return readUint16(event, C.offsetof_SDL_KeyboardEvent_raw)
+}
+
+func (event KeyboardEvent) Down() bool {
+	return readBool(event, C.offsetof_SDL_KeyboardEvent_down)
+}
+
+func (event KeyboardEvent) Repeat() bool {
+	return readBool(event, C.offsetof_SDL_KeyboardEvent_repeat)
 }
 
 /*
@@ -217,8 +245,8 @@ func (event MouseMotionEvent) Timestamp() uint32 {
 	return readUint32(event, C.offsetof_SDL_CommonEvent_timestamp)
 }
 
-func (event MouseMotionEvent) WindowID() uint32 {
-	return readUint32(event, C.offsetof_SDL_MouseMotionEvent_windowID)
+func (event MouseMotionEvent) WindowID() WindowID {
+	return WindowID(readUint32(event, C.offsetof_SDL_MouseMotionEvent_windowID))
 }
 
 func (event MouseMotionEvent) Which() uint32 {
@@ -229,20 +257,20 @@ func (event MouseMotionEvent) State() uint32 {
 	return readUint32(event, C.offsetof_SDL_MouseMotionEvent_state)
 }
 
-func (event MouseMotionEvent) X() int32 {
-	return readInt32(event, C.offsetof_SDL_MouseMotionEvent_x)
+func (event MouseMotionEvent) X() float32 {
+	return readFloat32(event, C.offsetof_SDL_MouseMotionEvent_x)
 }
 
-func (event MouseMotionEvent) Y() int32 {
-	return readInt32(event, C.offsetof_SDL_MouseMotionEvent_y)
+func (event MouseMotionEvent) Y() float32 {
+	return readFloat32(event, C.offsetof_SDL_MouseMotionEvent_y)
 }
 
-func (event MouseMotionEvent) Xrel() int32 {
-	return readInt32(event, C.offsetof_SDL_MouseMotionEvent_xrel)
+func (event MouseMotionEvent) Xrel() float32 {
+	return readFloat32(event, C.offsetof_SDL_MouseMotionEvent_xrel)
 }
 
-func (event MouseMotionEvent) Yrel() int32 {
-	return readInt32(event, C.offsetof_SDL_MouseMotionEvent_yrel)
+func (event MouseMotionEvent) Yrel() float32 {
+	return readFloat32(event, C.offsetof_SDL_MouseMotionEvent_yrel)
 }
 
 /*
@@ -263,8 +291,8 @@ func (event MouseButtonEvent) Timestamp() uint32 {
 	return readUint32(event, C.offsetof_SDL_CommonEvent_timestamp)
 }
 
-func (event MouseButtonEvent) WindowID() uint32 {
-	return readUint32(event, C.offsetof_SDL_MouseButtonEvent_windowID)
+func (event MouseButtonEvent) WindowID() WindowID {
+	return WindowID(readUint32(event, C.offsetof_SDL_MouseButtonEvent_windowID))
 }
 
 func (event MouseButtonEvent) Which() uint32 {

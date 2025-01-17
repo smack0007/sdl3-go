@@ -2,10 +2,19 @@ package sdl
 
 import (
 	"encoding/binary"
+	"math"
 )
+
+func readBool(data []byte, offset int) bool {
+	return data[offset] != 0
+}
 
 func readBytes(data []byte, offset int, length int) []byte {
 	return data[offset : offset+length]
+}
+
+func readFloat32(data []byte, offset int) float32 {
+	return math.Float32frombits(binary.NativeEndian.Uint32(data[offset : offset+4]))
 }
 
 func readInt32(data []byte, offset int) int32 {
