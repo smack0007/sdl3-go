@@ -7,9 +7,14 @@ import (
 )
 
 func main() {
-	var version SDL.Version
-	SDL.GetVersion(&version)
-	fmt.Printf("SDL Version: %d.%d.%d\n", version.Major, version.Minor, version.Patch)
+	fmt.Printf("=== Compiled ===\n")
+	fmt.Printf("Version: %d.%d.%d\n", SDL.VERSIONNUM_MAJOR(SDL.VERSION), SDL.VERSIONNUM_MINOR(SDL.VERSION), SDL.VERSIONNUM_MICRO(SDL.VERSION))
+	fmt.Printf("Revision: %s\n", SDL.REVISION)
 
-	fmt.Printf("SDL Revision: %s\n", SDL.GetRevision())
+	fmt.Printf("\n")
+
+	fmt.Printf("=== Linked ===\n")
+	version := SDL.GetVersion()
+	fmt.Printf("Version: %d.%d.%d\n", SDL.VERSIONNUM_MAJOR(version), SDL.VERSIONNUM_MINOR(version), SDL.VERSIONNUM_MICRO(version))
+	fmt.Printf("Revision: %s\n", SDL.GetRevision())
 }
