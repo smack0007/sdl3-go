@@ -18,10 +18,25 @@ var FILES_TO_EXCLUDE = []string{
 }
 
 var TYPE_MAP = map[string]string{
-	"SDL_PROP_":        "string",
-	"SDL_LOG_CATEGORY": "int",
-	"SDL_LOG_PRIORITY": "LogPriority",
-	"SDL_WINDOWPOS":    "int",
+	"bool":     "bool",
+	"char*":    "string",
+	"double":   "float64",
+	"float":    "float32",
+	"float*":   "*float32",
+	"Sint32":   "int32",
+	"size_t":   "uint64",
+	"size_t*":  "*uint64",
+	"Uint8":    "uint8",
+	"Uint8*":   "*uint8",
+	"Uint32":   "uint32",
+	"Uint32*":  "*uint32",
+	"Uint64":   "uint64",
+	"wchar_t*": "string",
+
+	"SDL_PROP_":         "string",
+	"SDL_LOG_CATEGORY_": "int",
+	"SDL_LOG_PRIORITY_": "LogPriority",
+	"SDL_WINDOWPOS_":    "int",
 }
 
 func main() {
@@ -57,7 +72,14 @@ func mapType(name string) string {
 		}
 	}
 
-	return "uint32"
+	name = stripPrefixes(name)
+
+	for strings.HasSuffix(name, "*") {
+		name = "*" + name[0:len(name)-1]
+	}
+
+	fmt.Printf("%s\n", name)
+	return name
 }
 
 type ParseState uint32
@@ -65,6 +87,7 @@ type ParseState uint32
 const (
 	ParseStateNone ParseState = 0
 	ParseStateEnum ParseState = 1
+	ParseStateFunc ParseState = 2
 )
 
 func parseFile(includeDirectory string, fileName string) {
@@ -79,6 +102,7 @@ func parseFile(includeDirectory string, fileName string) {
 	buffer := ""
 	defines := []string{}
 	enums := []string{}
+	funcs := []string{}
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -90,6 +114,13 @@ func parseFile(includeDirectory string, fileName string) {
 			} else if strings.HasPrefix(line, "typedef enum ") {
 				state = ParseStateEnum
 				buffer += line
+			} else if strings.HasPrefix(line, "extern SDL_DECLSPEC ") {
+				if strings.Contains(line, ";") {
+					funcs = append(funcs, line)
+				} else {
+					state = ParseStateFunc
+					buffer += line
+				}
 			}
 		} else {
 			buffer += line
@@ -98,6 +129,8 @@ func parseFile(includeDirectory string, fileName string) {
 				switch state {
 				case ParseStateEnum:
 					enums = append(enums, buffer)
+				case ParseStateFunc:
+					funcs = append(funcs, buffer)
 				}
 
 				buffer = ""
@@ -113,7 +146,8 @@ func parseFile(includeDirectory string, fileName string) {
 
 	output := ""
 
-	output += writeDefinesAndEnums(output, defines, enums)
+	output = writeDefinesAndEnums(output, defines, enums)
+	output = writeFuncs(output, funcs)
 
 	output += "\n"
 	outputFileName := strings.ReplaceAll(fileName, "SDL_", "")
@@ -145,7 +179,7 @@ func writeDefinesAndEnums(output string, defines []string, enums []string) strin
 		output += fmt.Sprintf("type %s C.%s\n", getEnumName(parts[0]), parts[0])
 	}
 
-	output += "const (\n"
+	output += "\nconst (\n"
 
 	for _, define := range defines {
 		define = minimizeWhitespace(removeComments(strings.ReplaceAll(define, "#define ", "")))
@@ -176,7 +210,50 @@ func writeDefinesAndEnums(output string, defines []string, enums []string) strin
 		}
 	}
 
-	output += ")\n"
+	output += ")\n\n"
+
+	return output
+}
+
+func writeFuncs(output string, funcs []string) string {
+
+	for _, function := range funcs {
+		function = minimizeWhitespace(removeComments(strings.ReplaceAll(strings.ReplaceAll(function, "extern SDL_DECLSPEC ", ""), "SDLCALL ", "")))
+		function = strings.ReplaceAll(function, "const ", "")
+		function = strings.ReplaceAll(strings.ReplaceAll(function, " * ", "* "), " ** ", "** ")
+		function = strings.ReplaceAll(function, " *", "* ")
+
+		parts := splitAny(function, " (,);")
+
+		if len(parts) < 2 {
+			continue
+		}
+
+		returnType := parts[0]
+		funcName := parts[1]
+
+		output += fmt.Sprintf("func %s(", funcName)
+
+		for i := 2; i < len(parts); i += 2 {
+			if i+1 >= len(parts) {
+				continue
+			}
+			if i != 2 {
+				output += ", "
+			}
+			output += fmt.Sprintf("%s %s", parts[i+1], mapType(parts[i]))
+		}
+
+		output += ") "
+
+		if returnType != "void" {
+			output += mapType(returnType) + " "
+		}
+
+		output += "{\n"
+
+		output += "}\n\n"
+	}
 
 	return output
 }
