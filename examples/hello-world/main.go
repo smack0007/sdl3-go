@@ -43,6 +43,9 @@ func run() int {
 			case SDL.EVENT_QUIT:
 				done = true
 
+			case SDL.EVENT_WINDOW_MINIMIZED:
+				SDL.FlashWindow(window, SDL.FLASH_BRIEFLY)
+
 			case SDL.EVENT_WINDOW_MOUSE_ENTER:
 				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Enter")
 

@@ -17,6 +17,13 @@ var FILES_TO_EXCLUDE = []string{
 	"SDL_oldnames.h",
 }
 
+var TYPE_MAP = map[string]string{
+	"SDL_PROP_":        "string",
+	"SDL_LOG_CATEGORY": "int",
+	"SDL_LOG_PRIORITY": "LogPriority",
+	"SDL_WINDOWPOS":    "int",
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatal("Please provide the directory to the SDL include files.\n")
@@ -36,57 +43,29 @@ func main() {
 
 	for _, file := range entries {
 		fileName := file.Name()
-		if slices.Contains(FILES_TO_EXCLUDE, fileName) {
+		if slices.Contains(FILES_TO_EXCLUDE, fileName) || strings.HasPrefix(fileName, "SDL_test_") {
 			continue
 		}
 		parseFile(includeDirectory, fileName)
 	}
 }
 
-func substring(input string, start, end int) string {
-	counter, startIndex := 0, 0
-	for i := range input {
-		if counter == start {
-			startIndex = i
-		}
-		if counter == end {
-			return input[startIndex:i]
-		}
-		counter += 1
-	}
-	return input[startIndex:]
-}
-
-func minimizeWhitespace(input string) string {
-	input = strings.ReplaceAll(input, "\t", " ")
-	input = strings.ReplaceAll(input, "  ", " ")
-	return input
-}
-
-func removeComments(input string) string {
-	index := strings.Index(input, "//")
-	if index != -1 {
-		input = input[0:index]
-	}
-
-	indexStart := strings.Index(input, "/*")
-	indexEnd := strings.Index(input, "*/")
-	if indexStart != -1 && indexEnd != -1 {
-		input = substring(input, 0, indexStart) + substring(input, indexEnd+1, len(input)-1)
-	}
-
-	return input
-}
-
-func removeEmptyStrings(input []string) []string {
-	result := []string{}
-	for _, value := range input {
-		if value != "" {
-			result = append(result, value)
+func mapType(name string) string {
+	for key, value := range TYPE_MAP {
+		if strings.HasPrefix(name, key) {
+			return value
 		}
 	}
-	return result
+
+	return "uint32"
 }
+
+type ParseState uint32
+
+const (
+	ParseStateNone ParseState = 0
+	ParseStateEnum ParseState = 1
+)
 
 func parseFile(includeDirectory string, fileName string) {
 	file, err := os.Open(path.Join(includeDirectory, fileName))
@@ -96,14 +75,34 @@ func parseFile(includeDirectory string, fileName string) {
 	}
 	defer file.Close()
 
+	state := ParseStateNone
+	buffer := ""
 	defines := []string{}
+	enums := []string{}
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 
-		if strings.HasPrefix(line, "#define SDL_") && !strings.HasSuffix(line, "_h_") {
-			defines = append(defines, line)
+		if state == ParseStateNone {
+			if strings.HasPrefix(line, "#define ") && !strings.HasSuffix(line, "_h_") {
+				defines = append(defines, line)
+			} else if strings.HasPrefix(line, "typedef enum ") {
+				state = ParseStateEnum
+				buffer += line
+			}
+		} else {
+			buffer += line
+
+			if strings.Contains(line, ";") {
+				switch state {
+				case ParseStateEnum:
+					enums = append(enums, buffer)
+				}
+
+				buffer = ""
+				state = ParseStateNone
+			}
 		}
 	}
 
@@ -114,22 +113,7 @@ func parseFile(includeDirectory string, fileName string) {
 
 	output := ""
 
-	output += "const (\n"
-	for _, define := range defines {
-		define = minimizeWhitespace(removeComments(strings.ReplaceAll(define, "#define ", "")))
-		parts := removeEmptyStrings(strings.Split(define, " "))
-		if len(parts) > 1 {
-			name := strings.TrimPrefix(parts[0], "SDL_")
-			type_ := "uint32"
-
-			if strings.Contains(name, "(") && strings.Contains(name, ")") {
-				continue
-			}
-
-			output += fmt.Sprintf("\t%s %s = C.%s\n", name, type_, parts[0])
-		}
-	}
-	output += ")\n"
+	output += writeDefinesAndEnums(output, defines, enums)
 
 	output += "\n"
 	outputFileName := strings.ReplaceAll(fileName, "SDL_", "")
@@ -139,4 +123,60 @@ func parseFile(includeDirectory string, fileName string) {
 		log.Fatal(err)
 		os.Exit(1)
 	}
+}
+
+func stripPrefixes(input string) string {
+	return strings.TrimPrefix(input, "SDL_")
+}
+
+func getEnumName(input string) string {
+	return stripPrefixes(input)
+}
+
+func writeDefinesAndEnums(output string, defines []string, enums []string) string {
+	for _, enum := range enums {
+		enum = minimizeWhitespace(removeComments(strings.ReplaceAll(enum, "typedef enum ", "")))
+		parts := trimAllSpace(splitAny(enum, "{,};"))
+
+		if len(parts) < 1 {
+			continue
+		}
+
+		output += fmt.Sprintf("type %s C.%s\n", getEnumName(parts[0]), parts[0])
+	}
+
+	output += "const (\n"
+
+	for _, define := range defines {
+		define = minimizeWhitespace(removeComments(strings.ReplaceAll(define, "#define ", "")))
+		parts := removeEmptyStrings(strings.Split(define, " "))
+		if len(parts) > 1 {
+			name := getEnumName(parts[0])
+
+			if strings.Contains(name, "(") && strings.Contains(name, ")") {
+				continue
+			}
+
+			output += fmt.Sprintf("\t%s %s = C.%s\n", name, mapType(parts[0]), parts[0])
+		}
+	}
+
+	for _, enum := range enums {
+		enum = minimizeWhitespace(removeComments(strings.ReplaceAll(enum, "typedef enum ", "")))
+		parts := trimAllSpace(splitAny(enum, "{,};"))
+
+		if len(parts) < 1 {
+			continue
+		}
+
+		enumName := getEnumName(parts[0])
+
+		for _, enumValue := range parts[1 : len(parts)-1] {
+			output += fmt.Sprintf("\t%s %s = C.%s\n", stripPrefixes(enumValue), enumName, parts[0])
+		}
+	}
+
+	output += ")\n"
+
+	return output
 }

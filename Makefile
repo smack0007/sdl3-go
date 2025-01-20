@@ -12,10 +12,10 @@ vet:
 	go vet ./...
 
 run-hello-world:
-	go run ./examples/hello-world/main.go
+	go run ./examples/hello-world
 
 run-scraper:
-	go run ./tools/scraper/main.go $(shell pkg-config sdl3 --cflags)
+	go run ./tools/scraper $(shell pkg-config sdl3 --cflags)
 
 run-sdlinfo:
-	go run ./tools/sdlinfo/main.go
+	go run ./tools/sdlinfo

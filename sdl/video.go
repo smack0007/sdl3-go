@@ -7,14 +7,18 @@ import (
 	"unsafe"
 )
 
+type FlashOperation C.SDL_FlashOperation
 type Surface C.SDL_Surface
-
 type Window C.SDL_Window
 type WindowFlags uint32
 type WindowEventID uint8
 type WindowID uint32
 
 const (
+	FLASH_CANCEL        FlashOperation = C.SDL_FLASH_CANCEL
+	FLASH_BRIEFLY       FlashOperation = C.SDL_FLASH_BRIEFLY
+	FLASH_UNTIL_FOCUSED FlashOperation = C.SDL_FLASH_UNTIL_FOCUSED
+
 	WINDOW_FULLSCREEN          WindowFlags = C.SDL_WINDOW_FULLSCREEN
 	WINDOW_OPENGL              WindowFlags = C.SDL_WINDOW_OPENGL
 	WINDOW_OCCLUDED            WindowFlags = C.SDL_WINDOW_OCCLUDED
@@ -41,7 +45,8 @@ const (
 	WINDOW_TRANSPARENT         WindowFlags = C.SDL_WINDOW_TRANSPARENT
 	WINDOW_NOT_FOCUSABLE       WindowFlags = C.SDL_WINDOW_NOT_FOCUSABLE
 
-	WINDOWPOS_CENTERED int = C.SDL_WINDOWPOS_CENTERED
+	WINDOWPOS_UNDEFINED int = C.SDL_WINDOWPOS_UNDEFINED
+	WINDOWPOS_CENTERED  int = C.SDL_WINDOWPOS_CENTERED
 )
 
 func CreateWindow(
@@ -65,6 +70,10 @@ func CreateWindow(
 
 func DestroyWindow(window *Window) {
 	C.SDL_DestroyWindow((*C.SDL_Window)(unsafe.Pointer(window)))
+}
+
+func FlashWindow(window *Window, operation FlashOperation) error {
+	return mapErrorBool(bool(C.SDL_FlashWindow((*C.SDL_Window)(unsafe.Pointer(window)), C.SDL_FlashOperation(operation))))
 }
 
 func GetWindowSurface(window *Window) (*Surface, error) {
