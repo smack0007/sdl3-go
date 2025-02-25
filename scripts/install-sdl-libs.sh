@@ -3,7 +3,7 @@ set -e
 
 SCRIPT_DIRECTORY="$(dirname "$(realpath "${BASH_SOURCE[-1]}")")"
 TMP_DIR="./tmp"
-SDL_TAG="preview-3.1.8"
+SDL_TAG="release-3.2.4"
 
 cd ${SCRIPT_DIRECTORY}
 

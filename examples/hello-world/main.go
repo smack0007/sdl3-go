@@ -2,11 +2,13 @@ package main
 
 import (
 	"os"
+	"runtime"
 
 	SDL "github.com/smack0007/sdl-go/sdl"
 )
 
 func main() {
+	runtime.LockOSThread()
 	os.Exit(run())
 }
 
