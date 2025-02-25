@@ -11,44 +11,65 @@ static inline void _SDL_Log(const char *str)
 static inline void _SDL_LogCritical(int category,
                                     const char *str)
 {
-  SDL_LogCritical(category, str);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat"
+	SDL_LogCritical(category, str);
+#pragma clang diagnostic pop
 }
 
 static inline void _SDL_LogDebug(int category,
                                  const char *str)
 {
-  SDL_LogDebug(category, str);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat"
+	SDL_LogDebug(category, str);
+#pragma clang diagnostic pop
 }
 
 static inline void _SDL_LogError(int category,
                                  const char *str)
 {
-  SDL_LogError(category, str);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat"
+	SDL_LogError(category, str);
+#pragma clang diagnostic pop
 }
 
 static inline void _SDL_LogInfo(int category,
                                 const char *str)
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat"
   SDL_LogInfo(category, str);
+#pragma clang diagnostic pop
 }
 
 static inline void _SDL_LogMessage(int category,
                                    SDL_LogPriority priority,
                                    const char *str)
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat"
   SDL_LogMessage(category, priority, str);
+#pragma clang diagnostic pop
 }
 
 static inline void _SDL_LogVerbose(int category,
                                    const char *str)
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat"
   SDL_LogVerbose(category, str);
+#pragma clang diagnostic pop
 }
 
 static inline void _SDL_LogWarn(int category,
                                 const char *str)
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat"
   SDL_LogWarn(category, str);
+#pragma clang diagnostic pop
 }
 */
 import "C"
