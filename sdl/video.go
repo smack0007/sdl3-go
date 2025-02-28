@@ -55,11 +55,11 @@ func CreateWindow(
 	h int,
 	flags WindowFlags,
 ) (*Window, error) {
-	cTitle := C.CString(title)
-	defer C.free(unsafe.Pointer(cTitle))
+	c_title := C.CString(title)
+	defer C.free(unsafe.Pointer(c_title))
 
 	result := (*Window)(unsafe.Pointer(C.SDL_CreateWindow(
-		cTitle,
+		c_title,
 		C.int(w),
 		C.int(h),
 		C.SDL_WindowFlags(flags),
@@ -73,21 +73,71 @@ func DestroyWindow(window *Window) {
 }
 
 func FlashWindow(window *Window, operation FlashOperation) error {
-	return mapErrorBool(bool(C.SDL_FlashWindow((*C.SDL_Window)(unsafe.Pointer(window)), C.SDL_FlashOperation(operation))))
+	return mapErrorBool(
+		bool(
+			C.SDL_FlashWindow(
+				(*C.SDL_Window)(unsafe.Pointer(window)),
+				C.SDL_FlashOperation(operation),
+			),
+		),
+	)
+}
+
+func GetWindowSizeInPixels(window *Window) (w int, h int, err error) {
+	err = mapErrorBool(
+		bool(
+			C.SDL_GetWindowSizeInPixels(
+				(*C.SDL_Window)(unsafe.Pointer(window)),
+				(*C.int)(unsafe.Pointer(&w)),
+				(*C.int)(unsafe.Pointer(&h)),
+			),
+		),
+	)
+
+	return
 }
 
 func GetWindowSurface(window *Window) (*Surface, error) {
-	result := (*Surface)(unsafe.Pointer(C.SDL_GetWindowSurface((*C.SDL_Window)(unsafe.Pointer(window)))))
+	result := (*Surface)(unsafe.Pointer(
+		C.SDL_GetWindowSurface(
+			(*C.SDL_Window)(unsafe.Pointer(window)),
+		),
+	))
+
 	return result, mapErrorPointer(result)
 }
 
-func SetWindowTitle(window *Window, title string) {
-	cTitle := C.CString(title)
-	defer C.free(unsafe.Pointer(cTitle))
+func HideWindow(window *Window) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_HideWindow(
+				(*C.SDL_Window)(unsafe.Pointer(window)),
+			),
+		),
+	)
+}
 
-	C.SDL_SetWindowTitle(
-		(*C.SDL_Window)(unsafe.Pointer(window)),
-		cTitle,
+func SetWindowTitle(window *Window, title string) error {
+	c_title := C.CString(title)
+	defer C.free(unsafe.Pointer(c_title))
+
+	return mapErrorBool(
+		bool(
+			C.SDL_SetWindowTitle(
+				(*C.SDL_Window)(unsafe.Pointer(window)),
+				c_title,
+			),
+		),
+	)
+}
+
+func ShowWindow(window *Window) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_ShowWindow(
+				(*C.SDL_Window)(unsafe.Pointer(window)),
+			),
+		),
 	)
 }
 

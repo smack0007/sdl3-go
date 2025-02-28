@@ -19,16 +19,18 @@ func CreateWindowAndRenderer(
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
 
-	result := (bool)(C.SDL_CreateWindowAndRenderer(
-		cTitle,
-		C.int(width),
-		C.int(height),
-		C.SDL_WindowFlags(window_flags),
-		(**C.SDL_Window)(unsafe.Pointer(&window)),
-		(**C.SDL_Renderer)(unsafe.Pointer(&renderer)),
-	))
-
-	err = mapErrorBool(result)
+	err = mapErrorBool(
+		bool(
+			C.SDL_CreateWindowAndRenderer(
+				cTitle,
+				C.int(width),
+				C.int(height),
+				C.SDL_WindowFlags(window_flags),
+				(**C.SDL_Window)(unsafe.Pointer(&window)),
+				(**C.SDL_Renderer)(unsafe.Pointer(&renderer)),
+			),
+		),
+	)
 
 	return
 }
@@ -38,23 +40,29 @@ func DestroyRenderer(renderer *Renderer) {
 }
 
 func GetRenderDrawColor(renderer *Renderer) (r, g, b, a uint8, err error) {
-	result := bool(C.SDL_GetRenderDrawColor(
-		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
-		(*C.Uint8)(unsafe.Pointer(&r)),
-		(*C.Uint8)(unsafe.Pointer(&g)),
-		(*C.Uint8)(unsafe.Pointer(&b)),
-		(*C.Uint8)(unsafe.Pointer(&a)),
-	))
-
-	err = mapErrorBool(result)
+	err = mapErrorBool(
+		bool(
+			C.SDL_GetRenderDrawColor(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+				(*C.Uint8)(unsafe.Pointer(&r)),
+				(*C.Uint8)(unsafe.Pointer(&g)),
+				(*C.Uint8)(unsafe.Pointer(&b)),
+				(*C.Uint8)(unsafe.Pointer(&a)),
+			),
+		),
+	)
 
 	return
 }
 
 func RenderClear(renderer *Renderer) error {
-	return mapErrorBool((bool)(C.SDL_RenderClear(
-		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
-	)))
+	return mapErrorBool(
+		bool(
+			C.SDL_RenderClear(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+			),
+		),
+	)
 }
 
 func RenderLine(renderer *Renderer, x1 float32, y1 float32, x2 float32, y2 float32) error {
@@ -91,37 +99,65 @@ func RenderFillRect(renderer *Renderer, rect *FRect) error {
 }
 
 func GetRenderScale(renderer *Renderer) (scaleX float32, scaleY float32, err error) {
-	result := (bool)(C.SDL_GetRenderScale(
-		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
-		(*C.float)(unsafe.Pointer(&scaleX)),
-		(*C.float)(unsafe.Pointer(&scaleY)),
-	))
-
-	err = mapErrorBool(result)
+	err = mapErrorBool(
+		bool(
+			C.SDL_GetRenderScale(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+				(*C.float)(unsafe.Pointer(&scaleX)),
+				(*C.float)(unsafe.Pointer(&scaleY)),
+			),
+		),
+	)
 
 	return
 }
 
-func RenderPresent(renderer *Renderer) {
-	C.SDL_RenderPresent(
-		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+func RenderPresent(renderer *Renderer) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_RenderPresent(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+			),
+		),
+	)
+}
+
+func SetRenderDrawColor(renderer *Renderer, r uint8, g uint8, b uint8, a uint8) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_SetRenderDrawColor(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+				C.Uint8(r),
+				C.Uint8(g),
+				C.Uint8(b),
+				C.Uint8(a),
+			),
+		),
+	)
+}
+
+func SetRenderDrawColorFloat(renderer *Renderer, r float32, g float32, b float32, a float32) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_SetRenderDrawColorFloat(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+				C.float(r),
+				C.float(g),
+				C.float(b),
+				C.float(a),
+			),
+		),
 	)
 }
 
 func SetRenderScale(renderer *Renderer, scaleX float32, scaleY float32) error {
-	return mapErrorBool(bool(C.SDL_SetRenderScale(
-		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
-		C.float(scaleX),
-		C.float(scaleY),
-	)))
-}
-
-func SetRenderDrawColor(renderer *Renderer, r uint8, g uint8, b uint8, a uint8) error {
-	return mapErrorBool(bool(C.SDL_SetRenderDrawColor(
-		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
-		C.Uint8(r),
-		C.Uint8(g),
-		C.Uint8(b),
-		C.Uint8(a),
-	)))
+	return mapErrorBool(
+		bool(
+			C.SDL_SetRenderScale(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+				C.float(scaleX),
+				C.float(scaleY),
+			),
+		),
+	)
 }

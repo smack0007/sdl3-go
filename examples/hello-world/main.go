@@ -23,7 +23,7 @@ func run() int {
 
 	SDL.SetLogPriority(SDL.LOG_CATEGORY_APPLICATION, SDL.LOG_PRIORITY_DEBUG)
 
-	window, renderer, err := SDL.CreateWindowAndRenderer("Hello World!", 800, 600, SDL.WINDOW_OCCLUDED)
+	window, renderer, err := SDL.CreateWindowAndRenderer("Hello World!", 800, 600, SDL.WINDOW_HIDDEN)
 
 	if err != nil {
 		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed to create window and renderer: %s", err)
@@ -36,6 +36,16 @@ func run() int {
 	SDL.SetWindowTitle(window, "Hello World!")
 
 	SDL.LogInfo(SDL.LOG_CATEGORY_APPLICATION, "Initialized.")
+
+	draw(renderer)
+	SDL.ShowWindow(window)
+
+	width, height, err := SDL.GetWindowSizeInPixels(window)
+	if err != nil {
+		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed to get window size in pixels: %s", err)
+		return 1
+	}
+	SDL.LogInfo(SDL.LOG_CATEGORY_APPLICATION, "Window (%d, %d)", width, height)
 
 	done := false
 	for !done {

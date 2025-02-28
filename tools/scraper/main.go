@@ -7,6 +7,7 @@ import (
 	"os"
 	"path"
 	"slices"
+	"sort"
 	"strings"
 )
 
@@ -31,6 +32,7 @@ var TYPE_MAP = map[string]string{
 	"Uint32":   "uint32",
 	"Uint32*":  "*uint32",
 	"Uint64":   "uint64",
+	"void":     "void",
 	"wchar_t*": "string",
 
 	"SDL_PROP_":         "string",
@@ -65,6 +67,18 @@ func main() {
 	}
 }
 
+func indent(indentLevel int) string {
+	return strings.Repeat("\t", indentLevel)
+}
+
+func pointerSuffixToPrefix(name string) string {
+	for strings.HasSuffix(name, "*") {
+		name = "*" + name[0:len(name)-1]
+	}
+
+	return name
+}
+
 func mapType(name string) string {
 	for key, value := range TYPE_MAP {
 		if strings.HasPrefix(name, key) {
@@ -72,14 +86,18 @@ func mapType(name string) string {
 		}
 	}
 
-	name = stripPrefixes(name)
+	name = pointerSuffixToPrefix(stripPrefixes(name))
 
-	for strings.HasSuffix(name, "*") {
-		name = "*" + name[0:len(name)-1]
-	}
-
-	fmt.Printf("%s\n", name)
+	// fmt.Printf("%s\n", name)
 	return name
+}
+
+func isPointer(name string) bool {
+	return strings.HasPrefix(name, "*") || strings.HasSuffix(name, "*")
+}
+
+func isString(name string) bool {
+	return name == "char*"
 }
 
 type ParseState uint32
@@ -216,6 +234,7 @@ func writeDefinesAndEnums(output string, defines []string, enums []string) strin
 }
 
 func writeFuncs(output string, funcs []string) string {
+	funcNamesToOutput := make(map[string]string)
 
 	for _, function := range funcs {
 		function = minimizeWhitespace(removeComments(strings.ReplaceAll(strings.ReplaceAll(function, "extern SDL_DECLSPEC ", ""), "SDLCALL ", "")))
@@ -230,29 +249,130 @@ func writeFuncs(output string, funcs []string) string {
 		}
 
 		returnType := parts[0]
+		mappedReturnType := mapType(returnType)
+		mapErrorFunc := ""
+
 		funcName := parts[1]
 
-		output += fmt.Sprintf("func %s(", funcName)
+		funcOutput := fmt.Sprintf("func %s(", stripPrefixes(funcName))
 
 		for i := 2; i < len(parts); i += 2 {
 			if i+1 >= len(parts) {
 				continue
 			}
 			if i != 2 {
-				output += ", "
+				funcOutput += ", "
 			}
-			output += fmt.Sprintf("%s %s", parts[i+1], mapType(parts[i]))
+			funcOutput += fmt.Sprintf("%s %s", parts[i+1], mapType(parts[i]))
 		}
 
-		output += ") "
+		funcOutput += ") "
 
 		if returnType != "void" {
-			output += mapType(returnType) + " "
+			returnTypeToOutput := mappedReturnType
+
+			if mappedReturnType == "bool" {
+				mapErrorFunc = "mapErrorBool"
+				returnTypeToOutput = "error"
+			} else if isPointer(mappedReturnType) {
+				mapErrorFunc = "mapErrorPointer"
+				returnTypeToOutput = "(" + mappedReturnType + ", error)"
+			}
+
+			funcOutput += returnTypeToOutput + " "
 		}
 
-		output += "{\n"
+		funcOutput += "{\n"
 
-		output += "}\n\n"
+		indentLevel := 1
+
+		// Marshall strings
+		for i := 2; i < len(parts); i += 2 {
+			if i+1 >= len(parts) {
+				continue
+			}
+			if isString(parts[i]) {
+				funcOutput += indent(indentLevel) + "c_" + parts[i+1] + " := C.CString(" + parts[i+1] + ")\n"
+				funcOutput += indent(indentLevel) + "defer C.free(unsafe.Pointer(c_" + parts[i+1] + "))\n\n"
+			}
+		}
+
+		if returnType != "void" {
+			funcOutput += indent(indentLevel)
+
+			if mapErrorFunc != "" {
+				if mapErrorFunc == "mapErrorBool" {
+					funcOutput += "return mapErrorBool(\n"
+					indentLevel += 1
+					funcOutput += indent(indentLevel)
+				} else if mapErrorFunc == "mapErrorPointer" {
+					funcOutput += "result := "
+				}
+			} else {
+				funcOutput += "return "
+			}
+
+			if isPointer(mappedReturnType) {
+				funcOutput += "(" + mappedReturnType + ")(unsafe.Pointer(\n"
+			} else {
+				funcOutput += mappedReturnType + "(\n"
+			}
+			indentLevel += 1
+		}
+
+		funcOutput += indent(indentLevel) + "C." + funcName + "(\n"
+		indentLevel += 1
+
+		for i := 2; i < len(parts); i += 2 {
+			if i+1 >= len(parts) {
+				continue
+			}
+
+			if isString(parts[i]) {
+				funcOutput += indent(indentLevel) + "c_" + parts[i+1] + ",\n"
+			} else {
+				if isPointer(parts[i]) {
+					paramType := pointerSuffixToPrefix("C." + parts[i])
+					funcOutput += indent(indentLevel) + "(" + paramType + ")(unsafe.Pointer(" + parts[i+1] + ")),\n"
+				} else {
+					funcOutput += indent(indentLevel) + "C." + parts[i] + "(" + parts[i+1] + "),\n"
+				}
+
+			}
+		}
+
+		indentLevel -= 1
+		funcOutput += indent(indentLevel) + "),\n"
+
+		if returnType != "void" {
+			indentLevel -= 1
+			funcOutput += indent(indentLevel)
+
+			if mapErrorFunc == "mapErrorBool" {
+				funcOutput += "),\n"
+				indentLevel -= 1
+				funcOutput += indent(indentLevel) + ")\n"
+			} else if mapErrorFunc == "mapErrorPointer" {
+				funcOutput += "))\n\n"
+				funcOutput += indent(indentLevel) + "return result, mapErrorPointer(result)\n"
+			} else {
+				funcOutput += ")\n"
+			}
+		}
+
+		funcOutput += "}\n\n"
+
+		funcNamesToOutput[stripPrefixes(funcName)] = funcOutput
+	}
+
+	funcNames := make([]string, 0, len(funcNamesToOutput))
+	for key := range funcNamesToOutput {
+		funcNames = append(funcNames, key)
+	}
+	sort.Strings(funcNames)
+
+	for _, funcName := range funcNames {
+		output += funcNamesToOutput[funcName]
 	}
 
 	return output
