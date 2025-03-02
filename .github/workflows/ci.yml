@@ -9,12 +9,12 @@ env:
 jobs:
   ci:
     runs-on: ubuntu-latest
+      
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '1.24.0'
-      - name: Install SDL
-        run: ./scripts/install-sdl-libs.sh
       - name: Build
-        run: make build
+        uses: addnab/docker-run-action@v3
+        with:
+          image: smack0007/sdl-go
+          options: -v ${{ github.workspace }}:/app -e CI=1
+          run: make build
