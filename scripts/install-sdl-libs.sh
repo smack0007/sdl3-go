@@ -1,13 +1,13 @@
 #!/bin/bash
 set -e
-
-SCRIPT_DIRECTORY="$(dirname "$(realpath "${BASH_SOURCE[-1]}")")"
+SCRIPT_DIRECTORY="$(dirname $(realpath "${BASH_SOURCE[0]}"))"
 TMP_DIR="./tmp"
-SDL_TAG="release-3.2.4"
+SDL_TAG="release-3.2.6"
+
+SUDO_CMD=${SUDO_CMD:sudo}
 
 if type "apt" > /dev/null; then
-  sudo apt update
-  sudo apt install -y build-essential git make \
+  ${SUDO_CMD} apt-get install -y build-essential git make \
     pkg-config cmake ninja-build gnome-desktop-testing libasound2-dev libpulse-dev \
     libaudio-dev libjack-dev libsndio-dev libx11-dev libxext-dev \
     libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev \
@@ -24,4 +24,4 @@ mkdir ${TMP_DIR}/SDL/build
 cd ${TMP_DIR}/SDL/build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release --parallel
-sudo cmake --install . --config Release
+${SUDO_CMD} cmake --install . --config Release
