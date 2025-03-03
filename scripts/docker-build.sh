@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
-SCRIPT_DIRECTORY="$(dirname $(realpath "${BASH_SOURCE[0]}"))"
+. "$(dirname $(realpath "${BASH_SOURCE[0]}"))/../env.sh"
 
-cd ${SCRIPT_DIRECTORY}/..
-docker build -t smack0007/sdl-go .
+cd ${REPO_PATH}
+docker build \
+  --label golang=${GO_VERSION} \
+  --label sdl=${SDL_VERSION} \
+  --build-arg GO_DOCKER_VERSION=${GO_DOCKER_VERSION} \
+  -t smack0007/sdl-go:${GO_VERSION}_${SDL_VERSION} \
+  .

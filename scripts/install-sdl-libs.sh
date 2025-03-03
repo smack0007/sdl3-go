@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
-SCRIPT_DIRECTORY="$(dirname $(realpath "${BASH_SOURCE[0]}"))"
-TMP_DIR="./tmp"
-SDL_TAG="release-3.2.6"
+. "$(dirname $(realpath "${BASH_SOURCE[0]}"))/../env.sh"
 
 SUDO_CMD=${SUDO_CMD:sudo}
 
@@ -16,7 +14,7 @@ if type "apt" > /dev/null; then
     libpipewire-0.3-dev libwayland-dev libdecor-0-dev liburing-dev
 fi
 
-cd ${SCRIPT_DIRECTORY}
+cd ${REPO_PATH}
 
 [[ -d ${TMP_DIR}/SDL ]] && rm -rf ${TMP_DIR}/SDL
 git clone --depth 1 --branch ${SDL_TAG} https://github.com/libsdl-org/SDL.git ${TMP_DIR}/SDL

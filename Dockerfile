@@ -1,8 +1,12 @@
-FROM golang:1.24.0-bookworm
+ARG GO_DOCKER_VERSION=latest
 
-LABEL maintainer="Zachary Snow <zachary.snow+docker@gmail.com>" golang=1.24.0 sdl=3.2.6
+FROM golang:${GO_DOCKER_VERSION}
+
+LABEL maintainer="Zachary Snow <zachary.snow+docker@gmail.com>"
 
 WORKDIR /app
+COPY ./env.sh ./env.sh
+COPY ./go.mod ./go.mod
 COPY ./scripts/install-sdl-libs.sh ./scripts/install-sdl-libs.sh
 
 RUN apt-get update && apt-get upgrade -qqy \
