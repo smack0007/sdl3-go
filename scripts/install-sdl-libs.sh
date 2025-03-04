@@ -5,7 +5,7 @@ set -e
 SUDO_CMD=${SUDO_CMD:sudo}
 
 if type "apt" > /dev/null; then
-  ${SUDO_CMD} apt-get install -y build-essential git make \
+  ${SUDO_CMD} apt-get install --no-install-recommends -y build-essential git make \
     pkg-config cmake ninja-build gnome-desktop-testing libasound2-dev libpulse-dev \
     libaudio-dev libjack-dev libsndio-dev libx11-dev libxext-dev \
     libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev \

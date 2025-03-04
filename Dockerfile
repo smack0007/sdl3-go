@@ -11,5 +11,6 @@ COPY ./scripts/install-sdl-libs.sh ./scripts/install-sdl-libs.sh
 
 RUN apt-get update && apt-get upgrade -qqy \
     && SUDO_CMD= /app/scripts/install-sdl-libs.sh \
+    && rm -rf /app/tmp \
     && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /app/tmp
+    && apt-get autoremove -y && apt-get autoclean -y
