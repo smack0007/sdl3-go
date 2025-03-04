@@ -11,8 +11,5 @@ docker build \
   --build-arg GO_VERSION=${GO_VERSION} \
   --build-arg SDL_VERSION=${SDL_VERSION} \
   -t ${CONTAINER_NAME}:latest \
+  -t ${CONTAINER_NAME}:${GO_VERSION}_${SDL_VERSION} \
   .
-
-CONTAINER_ID="$(docker images | grep $CONTAINER_NAME:latest | head -n 1 | awk '{print $3}')"
-
-docker tag ${CONTAINER_ID} ${CONTAINER_NAME}:${GO_VERSION}_${SDL_VERSION}
