@@ -12,6 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: ./scripts/docker-run.sh "make build"
+        run: ./scripts/docker-run.sh "make build" >> $GITHUB_OUTPUT
 
           
