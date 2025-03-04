@@ -1,6 +1,5 @@
 REPO_PATH="$(dirname $(realpath "${BASH_SOURCE[0]}"))"
 GO_VERSION="$(cat go.mod | grep -Ei "go ([0-9\.]+)" | grep -oEi '[0-9\.]+')"
-GO_DOCKER_VERSION="${GO_VERSION}-bookworm"
 SDL_VERSION="3.2.6"
 SDL_TAG="release-${SDL_VERSION}"
 TMP_DIR="${REPO_PATH}/tmp"
