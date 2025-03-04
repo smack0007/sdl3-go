@@ -9,13 +9,9 @@ env:
 jobs:
   ci:
     runs-on: ubuntu-latest
-      
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        uses: addnab/docker-run-action@v3
-        with:
-          # Version is ${GO_VERSION}_${SDL_VERSION}
-          image: smack0007/sdl-go:1.24.0_3.2.6
-          options: -v ${{ github.workspace }}:/app -e CI=1
-          run: make build
+        run: ./scripts/docker-run.sh "make build"
+
+          
