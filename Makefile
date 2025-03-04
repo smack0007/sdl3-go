@@ -1,5 +1,5 @@
 build:
-	go build -o ./bin/sdl-go ./sdl && echo "Build succeeded."
+	go build -o ./bin/sdl-go ./sdl
 
 clean:
 	go clean

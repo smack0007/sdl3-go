@@ -7,5 +7,7 @@ if [[ ! "${CI}" = "1" ]]; then
   DOCKER_FLAGS="${DOCKER_FLAGS} -it"
 fi
 
+DOCKER_CMD=${1:-/bin/bash}
+
 cd ${REPO_PATH}
-docker run ${DOCKER_FLAGS} smack0007/sdl-go /bin/sh
+docker run ${DOCKER_FLAGS} smack0007/sdl-go ${DOCKER_CMD}
