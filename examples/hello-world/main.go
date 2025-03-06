@@ -2,24 +2,26 @@ package main
 
 import (
 	"os"
-	"runtime"
 
 	SDL "github.com/smack0007/sdl-go/sdl"
 )
 
-func main() {
-	runtime.LockOSThread()
-	os.Exit(run())
+type AppState struct {
+	window   *SDL.Window
+	renderer *SDL.Renderer
 }
 
-func run() int {
+func main() {
+	os.Exit(SDL.EnterAppMainCallbacks(os.Args, AppInit, AppIterate, AppEvent, AppQuit))
+}
+
+func AppInit(argv []string) (SDL.AppResult, *AppState) {
 	err := SDL.Init(SDL.INIT_VIDEO)
 
 	if err != nil {
 		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed initialize SDL: %s", err)
-		return 1
+		return SDL.APP_FAILURE, nil
 	}
-	defer SDL.Quit()
 
 	SDL.SetLogPriority(SDL.LOG_CATEGORY_APPLICATION, SDL.LOG_PRIORITY_DEBUG)
 
@@ -27,11 +29,8 @@ func run() int {
 
 	if err != nil {
 		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed to create window and renderer: %s", err)
-		return 1
+		return SDL.APP_FAILURE, nil
 	}
-
-	defer SDL.DestroyWindow(window)
-	defer SDL.DestroyRenderer(renderer)
 
 	SDL.SetWindowTitle(window, "Hello World!")
 
@@ -40,53 +39,54 @@ func run() int {
 	draw(renderer)
 	SDL.ShowWindow(window)
 
-	width, height, err := SDL.GetWindowSizeInPixels(window)
-	if err != nil {
-		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed to get window size in pixels: %s", err)
-		return 1
-	}
-	SDL.LogInfo(SDL.LOG_CATEGORY_APPLICATION, "Window (%d, %d)", width, height)
+	return SDL.APP_CONTINUE, &AppState{window: window, renderer: renderer}
+}
 
-	done := false
-	for !done {
-		for event := SDL.PollEvent(); event != nil; event = SDL.PollEvent() {
-			switch event.Type() {
+func AppIterate(appState *AppState) SDL.AppResult {
+	draw(appState.renderer)
 
-			case SDL.EVENT_QUIT:
-				done = true
+	return SDL.APP_CONTINUE
+}
 
-			case SDL.EVENT_WINDOW_MINIMIZED:
-				SDL.FlashWindow(window, SDL.FLASH_BRIEFLY)
+func AppEvent(appState *AppState, event SDL.Event) SDL.AppResult {
+	switch event.Type() {
+	case SDL.EVENT_QUIT:
+		return SDL.APP_SUCCESS
 
-			case SDL.EVENT_WINDOW_MOUSE_ENTER:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Enter")
+	case SDL.EVENT_WINDOW_MINIMIZED:
+		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Minimized")
+		SDL.FlashWindow(appState.window, SDL.FLASH_UNTIL_FOCUSED)
 
-			case SDL.EVENT_WINDOW_MOUSE_LEAVE:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Leave")
+	case SDL.EVENT_WINDOW_MOUSE_ENTER:
+		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Enter")
 
-			case SDL.EVENT_KEY_DOWN:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Down %d %t", event.Key().Key(), event.Key().Down())
+	case SDL.EVENT_WINDOW_MOUSE_LEAVE:
+		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Leave")
 
-			case SDL.EVENT_KEY_UP:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Up %d %t", event.Key().Key(), event.Key().Down())
+	case SDL.EVENT_KEY_DOWN:
+		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Down %d %t", event.Key().Key(), event.Key().Down())
 
-			case SDL.EVENT_MOUSE_MOTION:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Motion (%f, %f)", event.Motion().X(), event.Motion().Y())
+	case SDL.EVENT_KEY_UP:
+		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Up %d %t", event.Key().Key(), event.Key().Down())
 
-			case SDL.EVENT_MOUSE_BUTTON_DOWN:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Down %d", event.Button().Button())
+	case SDL.EVENT_MOUSE_MOTION:
+		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Motion (%f, %f)", event.Motion().X(), event.Motion().Y())
 
-			case SDL.EVENT_MOUSE_BUTTON_UP:
-				SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Up %d", event.Button().Button())
-			}
-		}
+	case SDL.EVENT_MOUSE_BUTTON_DOWN:
+		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Down %d", event.Button().Button())
 
-		draw(renderer)
-		SDL.Delay(1)
+	case SDL.EVENT_MOUSE_BUTTON_UP:
+		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Up %d", event.Button().Button())
 	}
 
+	return SDL.APP_CONTINUE
+}
+
+func AppQuit(appState *AppState, result SDL.AppResult) {
 	SDL.LogInfo(SDL.LOG_CATEGORY_APPLICATION, "Shuting down...")
-	return 0
+	SDL.DestroyRenderer(appState.renderer)
+	SDL.DestroyWindow(appState.window)
+	SDL.Quit()
 }
 
 func draw(renderer *SDL.Renderer) {

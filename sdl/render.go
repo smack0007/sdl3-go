@@ -16,13 +16,13 @@ func CreateWindowAndRenderer(
 	width, height int,
 	window_flags WindowFlags,
 ) (window *Window, renderer *Renderer, err error) {
-	cTitle := C.CString(title)
-	defer C.free(unsafe.Pointer(cTitle))
+	c_title := C.CString(title)
+	defer C.free(unsafe.Pointer(c_title))
 
 	err = mapErrorBool(
 		bool(
 			C.SDL_CreateWindowAndRenderer(
-				cTitle,
+				c_title,
 				C.int(width),
 				C.int(height),
 				C.SDL_WindowFlags(window_flags),

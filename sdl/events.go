@@ -319,6 +319,10 @@ func (event MouseButtonEvent) Y() int32 {
  * Functions
  */
 
+func cEventPointerToEvent(event *C.SDL_Event) Event {
+	return C.GoBytes(unsafe.Pointer(event), C.sizeof_SDL_Event)
+}
+
 func PollEvent() Event {
 	result := bool(C._SDL_PollEvent())
 
@@ -326,5 +330,5 @@ func PollEvent() Event {
 		return nil
 	}
 
-	return C.GoBytes(unsafe.Pointer(&C._event), C.sizeof_SDL_Event)
+	return cEventPointerToEvent(&C._event)
 }
