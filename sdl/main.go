@@ -106,7 +106,7 @@ func _SDL_AppIterate() AppResult {
 
 //export _SDL_AppEvent
 func _SDL_AppEvent(event *C.SDL_Event) AppResult {
-	goEvent := cEventPointerToEvent(event)
+	goEvent := cEventPointerToEventPointer(event)
 
 	values := _enterAppMainCallbacksState.appEvent.Call([]reflect.Value{_enterAppMainCallbacksState.appState, reflect.ValueOf(goEvent)})
 

@@ -13,5 +13,5 @@ const (
 
 type AppInit_func[AppState any] func(argv []string) (AppResult, *AppState)
 type AppIterate_func[AppState any] func(appState *AppState) AppResult
-type AppEvent_func[AppState any] func(appState *AppState, event Event) AppResult
+type AppEvent_func[AppState any] func(appState *AppState, event *Event) AppResult
 type AppQuit_func[AppState any] func(appState *AppState, result AppResult)

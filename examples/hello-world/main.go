@@ -48,7 +48,7 @@ func AppIterate(appState *AppState) SDL.AppResult {
 	return SDL.APP_CONTINUE
 }
 
-func AppEvent(appState *AppState, event SDL.Event) SDL.AppResult {
+func AppEvent(appState *AppState, event *SDL.Event) SDL.AppResult {
 	switch event.Type() {
 	case SDL.EVENT_QUIT:
 		return SDL.APP_SUCCESS
