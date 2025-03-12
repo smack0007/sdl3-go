@@ -1,6 +1,15 @@
 build:
 	go build -o ./bin/sdl-go ./sdl
 
+build-examples:
+	@for x in ./examples/*; do \
+		if [[ -d "$${x}" ]]; then \
+			for y in $${x}/*; do \
+				go build -o ./bin/$${y} $${y}; \
+			done; \
+		fi; \
+	done
+
 clean:
 	go clean
 	rm ./bin/sdl-go

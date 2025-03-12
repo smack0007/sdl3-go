@@ -13,5 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build
         run: ./scripts/docker-run.sh "make build"
+      - name: Build Examples
+        run: ./scripts/docker-run.sh "make build-examples"      
 
           
