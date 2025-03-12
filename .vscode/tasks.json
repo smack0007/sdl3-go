@@ -91,6 +91,31 @@
         "cwd": "${workspaceFolder}"
       },
       "problemMatcher": ["$go"]
+    },
+    {
+      "label": "Run Example Renderer Clear",
+      "group": {
+        "kind": "none",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "type": "process",
+      "command": "make",
+      "args": ["run-example-renderer-clear"],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "GDK_BACKEND": "wayland"
+        }
+      },
+      "problemMatcher": ["$go"]
     }
   ]
 }

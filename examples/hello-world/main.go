@@ -3,99 +3,99 @@ package main
 import (
 	"os"
 
-	SDL "github.com/smack0007/sdl-go/sdl"
+	"github.com/smack0007/sdl-go/sdl"
 )
 
 type AppState struct {
-	window   *SDL.Window
-	renderer *SDL.Renderer
+	window   *sdl.Window
+	renderer *sdl.Renderer
 }
 
 func main() {
-	os.Exit(SDL.EnterAppMainCallbacks(os.Args, AppInit, AppIterate, AppEvent, AppQuit))
+	os.Exit(sdl.EnterAppMainCallbacks(os.Args, AppInit, AppIterate, AppEvent, AppQuit))
 }
 
-func AppInit(argv []string) (SDL.AppResult, *AppState) {
-	err := SDL.Init(SDL.INIT_VIDEO)
+func AppInit(argv []string) (sdl.AppResult, *AppState) {
+	err := sdl.Init(sdl.INIT_VIDEO)
 
 	if err != nil {
-		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed initialize SDL: %s", err)
-		return SDL.APP_FAILURE, nil
+		sdl.LogError(sdl.LOG_CATEGORY_APPLICATION, "Failed initialize SDL: %s", err)
+		return sdl.APP_FAILURE, nil
 	}
 
-	SDL.SetLogPriority(SDL.LOG_CATEGORY_APPLICATION, SDL.LOG_PRIORITY_DEBUG)
+	sdl.SetLogPriority(sdl.LOG_CATEGORY_APPLICATION, sdl.LOG_PRIORITY_DEBUG)
 
-	window, renderer, err := SDL.CreateWindowAndRenderer("Hello World!", 800, 600, SDL.WINDOW_HIDDEN)
+	window, renderer, err := sdl.CreateWindowAndRenderer("Hello World!", 800, 600, sdl.WINDOW_HIDDEN)
 
 	if err != nil {
-		SDL.LogError(SDL.LOG_CATEGORY_APPLICATION, "Failed to create window and renderer: %s", err)
-		return SDL.APP_FAILURE, nil
+		sdl.LogError(sdl.LOG_CATEGORY_APPLICATION, "Failed to create window and renderer: %s", err)
+		return sdl.APP_FAILURE, nil
 	}
 
-	SDL.SetWindowTitle(window, "Hello World!")
+	sdl.SetWindowTitle(window, "Hello World!")
 
-	SDL.LogInfo(SDL.LOG_CATEGORY_APPLICATION, "Initialized.")
+	sdl.LogInfo(sdl.LOG_CATEGORY_APPLICATION, "Initialized.")
 
 	draw(renderer)
-	SDL.ShowWindow(window)
+	sdl.ShowWindow(window)
 
-	return SDL.APP_CONTINUE, &AppState{window: window, renderer: renderer}
+	return sdl.APP_CONTINUE, &AppState{window: window, renderer: renderer}
 }
 
-func AppIterate(appState *AppState) SDL.AppResult {
+func AppIterate(appState *AppState) sdl.AppResult {
 	draw(appState.renderer)
 
-	return SDL.APP_CONTINUE
+	return sdl.APP_CONTINUE
 }
 
-func AppEvent(appState *AppState, event *SDL.Event) SDL.AppResult {
+func AppEvent(appState *AppState, event *sdl.Event) sdl.AppResult {
 	switch event.Type() {
-	case SDL.EVENT_QUIT:
-		return SDL.APP_SUCCESS
+	case sdl.EVENT_QUIT:
+		return sdl.APP_SUCCESS
 
-	case SDL.EVENT_WINDOW_MINIMIZED:
-		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Minimized")
-		SDL.FlashWindow(appState.window, SDL.FLASH_UNTIL_FOCUSED)
+	case sdl.EVENT_WINDOW_MINIMIZED:
+		sdl.LogDebug(sdl.LOG_CATEGORY_APPLICATION, "Minimized")
+		sdl.FlashWindow(appState.window, sdl.FLASH_UNTIL_FOCUSED)
 
-	case SDL.EVENT_WINDOW_MOUSE_ENTER:
-		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Enter")
+	case sdl.EVENT_WINDOW_MOUSE_ENTER:
+		sdl.LogDebug(sdl.LOG_CATEGORY_APPLICATION, "Enter")
 
-	case SDL.EVENT_WINDOW_MOUSE_LEAVE:
-		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Leave")
+	case sdl.EVENT_WINDOW_MOUSE_LEAVE:
+		sdl.LogDebug(sdl.LOG_CATEGORY_APPLICATION, "Leave")
 
-	case SDL.EVENT_KEY_DOWN:
-		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Down %d %t", event.Key().Key(), event.Key().Down())
+	case sdl.EVENT_KEY_DOWN:
+		sdl.LogDebug(sdl.LOG_CATEGORY_APPLICATION, "Key Down %d %t", event.Key().Key(), event.Key().Down())
 
-	case SDL.EVENT_KEY_UP:
-		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Key Up %d %t", event.Key().Key(), event.Key().Down())
+	case sdl.EVENT_KEY_UP:
+		sdl.LogDebug(sdl.LOG_CATEGORY_APPLICATION, "Key Up %d %t", event.Key().Key(), event.Key().Down())
 
-	case SDL.EVENT_MOUSE_MOTION:
-		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Motion (%f, %f)", event.Motion().X(), event.Motion().Y())
+	case sdl.EVENT_MOUSE_MOTION:
+		sdl.LogDebug(sdl.LOG_CATEGORY_APPLICATION, "Mouse Motion (%f, %f)", event.Motion().X(), event.Motion().Y())
 
-	case SDL.EVENT_MOUSE_BUTTON_DOWN:
-		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Down %d", event.Button().Button())
+	case sdl.EVENT_MOUSE_BUTTON_DOWN:
+		sdl.LogDebug(sdl.LOG_CATEGORY_APPLICATION, "Mouse Button Down %d", event.Button().Button())
 
-	case SDL.EVENT_MOUSE_BUTTON_UP:
-		SDL.LogDebug(SDL.LOG_CATEGORY_APPLICATION, "Mouse Button Up %d", event.Button().Button())
+	case sdl.EVENT_MOUSE_BUTTON_UP:
+		sdl.LogDebug(sdl.LOG_CATEGORY_APPLICATION, "Mouse Button Up %d", event.Button().Button())
 	}
 
-	return SDL.APP_CONTINUE
+	return sdl.APP_CONTINUE
 }
 
-func AppQuit(appState *AppState, result SDL.AppResult) {
-	SDL.LogInfo(SDL.LOG_CATEGORY_APPLICATION, "Shuting down...")
-	SDL.DestroyRenderer(appState.renderer)
-	SDL.DestroyWindow(appState.window)
-	SDL.Quit()
+func AppQuit(appState *AppState, result sdl.AppResult) {
+	sdl.LogInfo(sdl.LOG_CATEGORY_APPLICATION, "Shuting down...")
+	sdl.DestroyRenderer(appState.renderer)
+	sdl.DestroyWindow(appState.window)
+	sdl.Quit()
 }
 
-func draw(renderer *SDL.Renderer) {
-	SDL.SetRenderDrawColor(renderer, 100, 149, 237, 255)
-	SDL.RenderClear(renderer)
+func draw(renderer *sdl.Renderer) {
+	sdl.SetRenderDrawColor(renderer, 100, 149, 237, 255)
+	sdl.RenderClear(renderer)
 
-	SDL.SetRenderDrawColor(renderer, 255, 0, 0, 255)
+	sdl.SetRenderDrawColor(renderer, 255, 0, 0, 255)
 
-	points := []SDL.FPoint{
+	points := []sdl.FPoint{
 		{X: 0, Y: 0},
 		{X: 1, Y: 0},
 		{X: 2, Y: 0},
@@ -138,7 +138,7 @@ func draw(renderer *SDL.Renderer) {
 		{X: 4, Y: 5},
 		{X: 5, Y: 5},
 	}
-	SDL.RenderPoints(renderer, points, 36)
+	sdl.RenderPoints(renderer, points, 36)
 
-	SDL.RenderPresent(renderer)
+	sdl.RenderPresent(renderer)
 }

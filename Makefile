@@ -19,3 +19,6 @@ run-scraper:
 
 run-sdlinfo:
 	go run ./tools/sdlinfo
+
+run-example-renderer-clear:
+	go run ./examples/renderer/01-clear
