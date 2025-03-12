@@ -22,3 +22,6 @@ run-sdlinfo:
 
 run-example-renderer-clear:
 	go run ./examples/renderer/01-clear
+
+run-example-renderer-primitives:
+	go run ./examples/renderer/02-primitives

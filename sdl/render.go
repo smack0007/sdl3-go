@@ -65,6 +65,13 @@ func RenderClear(renderer *Renderer) error {
 	)
 }
 
+func RenderFillRect(renderer *Renderer, rect *FRect) error {
+	return mapErrorBool((bool)(C.SDL_RenderFillRect(
+		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+		(*C.SDL_FRect)(unsafe.Pointer(rect)),
+	)))
+}
+
 func RenderLine(renderer *Renderer, x1 float32, y1 float32, x2 float32, y2 float32) error {
 	return mapErrorBool((bool)(C.SDL_RenderLine(
 		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -91,11 +98,15 @@ func RenderPoints(renderer *Renderer, points []FPoint, count int) error {
 	)))
 }
 
-func RenderFillRect(renderer *Renderer, rect *FRect) error {
-	return mapErrorBool((bool)(C.SDL_RenderFillRect(
-		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
-		(*C.SDL_FRect)(unsafe.Pointer(rect)),
-	)))
+func RenderRect(renderer *Renderer, rect *FRect) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_RenderRect(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+				(*C.SDL_FRect)(unsafe.Pointer(rect)),
+			),
+		),
+	)
 }
 
 func GetRenderScale(renderer *Renderer) (scaleX float32, scaleY float32, err error) {
