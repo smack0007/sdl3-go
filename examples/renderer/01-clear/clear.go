@@ -22,6 +22,7 @@ type AppState struct {
 }
 
 func main() {
+	/* use the callbacks */
 	os.Exit(sdl.EnterAppMainCallbacks(os.Args, AppInit, AppIterate, AppEvent, AppQuit))
 }
 

@@ -38,3 +38,6 @@ run-example-renderer-primitives:
 
 run-example-renderer-lines:
 	go run ./examples/renderer/03-lines
+
+run-example-renderer-points:
+	go run ./examples/renderer/04-points

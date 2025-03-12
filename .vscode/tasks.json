@@ -115,7 +115,7 @@
       "problemMatcher": ["$go"]
     },
     {
-      "label": "Run Example Renderer Clear",
+      "label": "Run Example Renderer 01 Clear",
       "group": {
         "kind": "none",
         "isDefault": false
@@ -140,7 +140,7 @@
       "problemMatcher": ["$go"]
     },
     {
-      "label": "Run Example Renderer Primitives",
+      "label": "Run Example Renderer 02 Primitives",
       "group": {
         "kind": "none",
         "isDefault": false
@@ -165,7 +165,7 @@
       "problemMatcher": ["$go"]
     },
     {
-      "label": "Run Example Renderer Lines",
+      "label": "Run Example Renderer 03 Lines",
       "group": {
         "kind": "none",
         "isDefault": false
@@ -181,6 +181,31 @@
       "type": "process",
       "command": "make",
       "args": ["run-example-renderer-lines"],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "GDK_BACKEND": "wayland"
+        }
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "Run Example Renderer 04 Points",
+      "group": {
+        "kind": "none",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "type": "process",
+      "command": "make",
+      "args": ["run-example-renderer-points"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {

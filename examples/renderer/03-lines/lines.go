@@ -22,6 +22,7 @@ type AppState struct {
 }
 
 func main() {
+	/* use the callbacks */
 	os.Exit(sdl.EnterAppMainCallbacks(os.Args, AppInit, AppIterate, AppEvent, AppQuit))
 }
 
@@ -36,7 +37,7 @@ func AppInit(argv []string) (sdl.AppResult, *AppState) {
 		return sdl.APP_FAILURE, nil
 	}
 
-	window, renderer, err := sdl.CreateWindowAndRenderer("examples/renderer/clear", 640, 480, 0)
+	window, renderer, err := sdl.CreateWindowAndRenderer("examples/renderer/lines", 640, 480, 0)
 
 	if err != nil {
 		sdl.Log("Couldn't create window/renderer: %s", err)
