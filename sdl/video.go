@@ -1,6 +1,9 @@
 package sdl
 
-//#include "video.h"
+/*
+#include <stdlib.h>
+#include <SDL3/SDL_video.h>
+*/
 import "C"
 
 import (

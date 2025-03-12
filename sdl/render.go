@@ -1,6 +1,9 @@
 package sdl
 
-//#include "render.h"
+/*
+#include <stdlib.h>
+#include <SDL3/SDL_render.h>
+*/
 import "C"
 
 import (

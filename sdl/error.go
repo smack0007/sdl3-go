@@ -1,6 +1,8 @@
 package sdl
 
-//#include "error.h"
+/*
+#include <SDL3/SDL_error.h>
+*/
 import "C"
 
 import (

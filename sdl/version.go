@@ -1,7 +1,9 @@
 package sdl
 
 /*
-#include "version.h"
+#include <SDL3/SDL_version.h>
+#include <SDL3/SDL_revision.h>
+
 static inline int _SDL_VERSIONNUM_MAJOR(int version) { return SDL_VERSIONNUM_MAJOR(version); }
 static inline int _SDL_VERSIONNUM_MINOR(int version) { return SDL_VERSIONNUM_MINOR(version); }
 static inline int _SDL_VERSIONNUM_MICRO(int version) { return SDL_VERSIONNUM_MICRO(version); }

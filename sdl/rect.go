@@ -1,6 +1,8 @@
 package sdl
 
-//#include "rect.h"
+/*
+#include <SDL3/SDL_rect.h>
+*/
 import "C"
 
 const ()

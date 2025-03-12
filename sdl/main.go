@@ -1,8 +1,8 @@
 package sdl
 
 /*
-#include "main.h"
-#include <stdio.h>
+#define SDL_MAIN_HANDLED
+#include <SDL3/SDL_main.h>
 
 extern SDL_AppResult _SDL_AppInit();
 extern SDL_AppResult _SDL_AppEvent(SDL_Event *event);

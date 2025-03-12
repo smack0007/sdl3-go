@@ -1,6 +1,8 @@
 package sdl
 
-//#include "timer.h"
+/*
+#include <SDL3/SDL_timer.h>
+*/
 import "C"
 
 const ()

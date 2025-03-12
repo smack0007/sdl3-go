@@ -1,6 +1,8 @@
 package sdl
 
-//#include "keycode.h"
+/*
+#include <SDL3/SDL_keycode.h>
+*/
 import "C"
 
 type Keymod uint16

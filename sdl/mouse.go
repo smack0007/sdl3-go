@@ -1,6 +1,8 @@
 package sdl
 
-//#include "mouse.h"
+/*
+#include <SDL3/SDL_mouse.h>
+*/
 import "C"
 
 const ()

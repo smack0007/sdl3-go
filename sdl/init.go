@@ -1,6 +1,9 @@
 package sdl
 
-//#include "init.h"
+/*
+#include <stdlib.h>
+#include <SDL3/SDL_init.h>
+*/
 import "C"
 import (
 	"unsafe"

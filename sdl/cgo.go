@@ -1,4 +1,6 @@
 package sdl
 
-//#cgo pkg-config: sdl3
+/*
+#cgo pkg-config: sdl3
+*/
 import "C"

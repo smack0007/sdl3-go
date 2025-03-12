@@ -1,7 +1,8 @@
 package sdl
 
 /*
-#include "log.h"
+#include <stdlib.h>
+#include <SDL3/SDL_log.h>
 
 static inline void _SDL_Log(const char *str)
 {

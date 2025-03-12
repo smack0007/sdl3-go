@@ -1,6 +1,8 @@
 package sdl
 
-//#include "pixels.h"
+/*
+#include <SDL3/SDL_pixels.h>
+*/
 import "C"
 
 const (
