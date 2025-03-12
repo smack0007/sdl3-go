@@ -5,6 +5,7 @@ build-examples:
 	@for x in ./examples/*; do \
 		if [[ -d "$${x}" ]]; then \
 			for y in $${x}/*; do \
+				echo "Building $${y}..."; \
 				go build -o ./bin/$${y} $${y}; \
 			done; \
 		fi; \
@@ -34,3 +35,6 @@ run-example-renderer-clear:
 
 run-example-renderer-primitives:
 	go run ./examples/renderer/02-primitives
+
+run-example-renderer-lines:
+	go run ./examples/renderer/03-lines

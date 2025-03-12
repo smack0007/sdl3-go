@@ -1,13 +1,21 @@
+/*
+ * This example creates an SDL window and renderer, and then draws some lines,
+ * rectangles and points to it every frame.
+ *
+ * This code is public domain. Feel free to use it for any purpose!
+ */
+
 package main
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"os"
 
 	"github.com/smack0007/sdl-go/sdl"
 )
 
 type AppState struct {
+	/* We will use this renderer to draw into this window every frame. */
 	window   *sdl.Window
 	renderer *sdl.Renderer
 	points   []sdl.FPoint

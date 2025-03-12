@@ -1,3 +1,11 @@
+/*
+ * This example code creates an SDL window and renderer, and then clears the
+ * window to a different color every frame, so you'll effectively get a window
+ * that's smoothly fading between colors.
+ *
+ * This code is public domain. Feel free to use it for any purpose!
+ */
+
 package main
 
 import (
@@ -8,6 +16,7 @@ import (
 )
 
 type AppState struct {
+	/* We will use this renderer to draw into this window every frame. */
 	window   *sdl.Window
 	renderer *sdl.Renderer
 }

@@ -24,6 +24,28 @@
       "problemMatcher": ["$go"]
     },
     {
+      "label": "Build Examples",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "type": "process",
+      "command": "make",
+      "args": ["build-examples"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
       "label": "Run Hello World",
       "group": {
         "kind": "none",
@@ -134,6 +156,31 @@
       "type": "process",
       "command": "make",
       "args": ["run-example-renderer-primitives"],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "GDK_BACKEND": "wayland"
+        }
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "Run Example Renderer Lines",
+      "group": {
+        "kind": "none",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "type": "process",
+      "command": "make",
+      "args": ["run-example-renderer-lines"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {

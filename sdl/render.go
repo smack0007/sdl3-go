@@ -82,6 +82,18 @@ func RenderLine(renderer *Renderer, x1 float32, y1 float32, x2 float32, y2 float
 	)))
 }
 
+func RenderLines(renderer *Renderer, points []FPoint, count int) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_RenderLines(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+				(*C.SDL_FPoint)(unsafe.Pointer(&points[0])),
+				C.int(count),
+			),
+		),
+	)
+}
+
 func RenderPoint(renderer *Renderer, x float32, y float32) error {
 	return mapErrorBool((bool)(C.SDL_RenderPoint(
 		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
