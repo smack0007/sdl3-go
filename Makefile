@@ -34,3 +34,6 @@ run-example-renderer-lines:
 
 run-example-renderer-points:
 	go run ./examples/renderer/04-points
+
+run-example-renderer-rectangles:
+	go run ./examples/renderer/05-rectangles

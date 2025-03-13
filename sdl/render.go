@@ -58,6 +58,20 @@ func GetRenderDrawColor(renderer *Renderer) (r, g, b, a uint8, err error) {
 	return
 }
 
+func GetRenderScale(renderer *Renderer) (scaleX float32, scaleY float32, err error) {
+	err = mapErrorBool(
+		bool(
+			C.SDL_GetRenderScale(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+				(*C.float)(unsafe.Pointer(&scaleX)),
+				(*C.float)(unsafe.Pointer(&scaleY)),
+			),
+		),
+	)
+
+	return
+}
+
 func RenderClear(renderer *Renderer) error {
 	return mapErrorBool(
 		bool(
@@ -73,6 +87,18 @@ func RenderFillRect(renderer *Renderer, rect *FRect) error {
 		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
 		(*C.SDL_FRect)(unsafe.Pointer(rect)),
 	)))
+}
+
+func RenderFillRects(renderer *Renderer, rects []FRect, count int) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_RenderFillRects(
+				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+				(*C.SDL_FRect)(unsafe.Pointer(&rects[0])),
+				C.int(count),
+			),
+		),
+	)
 }
 
 func RenderLine(renderer *Renderer, x1 float32, y1 float32, x2 float32, y2 float32) error {
@@ -124,18 +150,16 @@ func RenderRect(renderer *Renderer, rect *FRect) error {
 	)
 }
 
-func GetRenderScale(renderer *Renderer) (scaleX float32, scaleY float32, err error) {
-	err = mapErrorBool(
+func RenderRects(renderer *Renderer, rects []FRect, count int) error {
+	return mapErrorBool(
 		bool(
-			C.SDL_GetRenderScale(
+			C.SDL_RenderRects(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
-				(*C.float)(unsafe.Pointer(&scaleX)),
-				(*C.float)(unsafe.Pointer(&scaleY)),
+				(*C.SDL_FRect)(unsafe.Pointer(&rects[0])),
+				C.int(count),
 			),
 		),
 	)
-
-	return
 }
 
 func RenderPresent(renderer *Renderer) error {
