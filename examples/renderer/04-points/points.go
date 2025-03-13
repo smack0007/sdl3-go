@@ -49,7 +49,7 @@ func AppInit(argv []string) (sdl.AppResult, *AppState) {
 		return sdl.APP_FAILURE, nil
 	}
 
-	window, renderer, err := sdl.CreateWindowAndRenderer("examples/renderer/points", WINDOW_HEIGHT, WINDOW_HEIGHT, 0)
+	window, renderer, err := sdl.CreateWindowAndRenderer("examples/renderer/points", WINDOW_WIDTH, WINDOW_HEIGHT, 0)
 
 	if err != nil {
 		sdl.Log("Couldn't create window/renderer: %s", err)
