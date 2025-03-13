@@ -15,6 +15,9 @@ clean:
 	go clean
 	rm -rf ./bin
 
+codegen:
+	cd ./tools/codegen && go run .
+
 lint:
 	golangci-lint run ./...
 
