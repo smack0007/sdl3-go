@@ -2,18 +2,11 @@ build:
 	go build -o ./bin/sdl-go ./sdl
 
 build-examples:
-	@for x in ./examples/*; do \
-		if [[ -d "$${x}" ]]; then \
-			for y in $${x}/*; do \
-				echo "Building $${y}..."; \
-				go build -o ./bin/$${y} $${y}; \
-			done; \
-		fi; \
-	done
+	find ./examples/*/* -type d -exec sh -c 'echo "Building {}..." && go build -o ./bin/{} {}' ';'
 
 clean:
 	go clean
-	rm ./bin/sdl-go
+	rm -rf ./bin
 
 lint:
 	golangci-lint run ./...

@@ -33,6 +33,8 @@ static inline int _SDL_EnterAppMainCallbacks()
 {
 	char* argv[] = {};
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
 	return SDL_EnterAppMainCallbacks(
 		0,
 		argv,
@@ -41,6 +43,7 @@ static inline int _SDL_EnterAppMainCallbacks()
 		__SDL_AppEvent,
 		__SDL_AppQuit
 	);
+#pragma GCC diagnostic pop
 }
 */
 import "C"
