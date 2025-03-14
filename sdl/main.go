@@ -31,8 +31,10 @@ static inline void __SDL_AppQuit(void *appstate, SDL_AppResult result)
 
 static inline int _SDL_EnterAppMainCallbacks()
 {
-	char* argv[] = {};
+	char* argv[0];
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-warning-option"
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstringop-overflow"
 	return SDL_EnterAppMainCallbacks(
@@ -44,6 +46,7 @@ static inline int _SDL_EnterAppMainCallbacks()
 		__SDL_AppQuit
 	);
 #pragma GCC diagnostic pop
+#pragma clang diagnostic pop
 }
 */
 import "C"

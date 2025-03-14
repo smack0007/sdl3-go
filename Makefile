@@ -2,7 +2,7 @@ build:
 	go build -o ./bin/sdl-go ./sdl
 
 build-examples:
-	find ./examples/*/* -type d -exec sh -c 'echo "Building {}..." && go build -o ./bin/{} {}' ';'
+	@find ./examples/*/* -type d -exec sh -c 'echo "Building {}..." && go build -o ./bin/{} {}' ';'
 
 clean:
 	go clean
