@@ -11,7 +11,6 @@ import (
 )
 
 type FlashOperation C.SDL_FlashOperation
-type Surface C.SDL_Surface
 type Window C.SDL_Window
 type WindowFlags uint32
 type WindowEventID uint8

@@ -17,7 +17,7 @@ func mapErrorBool(result bool) error {
 	return GetError()
 }
 
-func mapErrorPointer(pointer interface{}) error {
+func mapErrorPointer(pointer any) error {
 	if pointer != nil {
 		return nil
 	}
@@ -26,5 +26,9 @@ func mapErrorPointer(pointer interface{}) error {
 }
 
 func GetError() error {
-	return errors.New(C.GoString(C.SDL_GetError()))
+	return errors.New(
+		C.GoString(
+			C.SDL_GetError(),
+		),
+	)
 }

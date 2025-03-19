@@ -1,3 +1,5 @@
+REPO_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+
 build:
 	go build -o ./bin/sdl-go ./sdl
 
@@ -37,3 +39,6 @@ run-example-renderer-points:
 
 run-example-renderer-rectangles:
 	go run ./examples/renderer/05-rectangles
+
+run-example-renderer-textures:
+	go run ./examples/renderer/06-textures

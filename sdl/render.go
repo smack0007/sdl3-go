@@ -11,8 +11,20 @@ import (
 )
 
 type Renderer C.SDL_Renderer
+type Texture C.SDL_Texture
 
 const ()
+
+func CreateTextureFromSurface(renderer *Renderer, surface *Surface) (*Texture, error) {
+	result := (*Texture)(
+		C.SDL_CreateTextureFromSurface(
+			(*C.SDL_Renderer)(renderer),
+			(*C.SDL_Surface)(surface),
+		),
+	)
+
+	return result, mapErrorPointer(result)
+}
 
 func CreateWindowAndRenderer(
 	title string,
@@ -39,7 +51,7 @@ func CreateWindowAndRenderer(
 }
 
 func DestroyRenderer(renderer *Renderer) {
-	C.SDL_DestroyRenderer((*C.SDL_Renderer)(unsafe.Pointer(renderer)))
+	C.SDL_DestroyRenderer((*C.SDL_Renderer)(renderer))
 }
 
 func GetRenderDrawColor(renderer *Renderer) (r, g, b, a uint8, err error) {
@@ -167,6 +179,19 @@ func RenderPresent(renderer *Renderer) error {
 		bool(
 			C.SDL_RenderPresent(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
+			),
+		),
+	)
+}
+
+func RenderTexture(renderer *Renderer, texture *Texture, srcrect *FRect, dstrect *FRect) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_RenderTexture(
+				(*C.SDL_Renderer)(renderer),
+				(*C.SDL_Texture)(texture),
+				(*C.SDL_FRect)(unsafe.Pointer(srcrect)),
+				(*C.SDL_FRect)(unsafe.Pointer(dstrect)),
 			),
 		),
 	)
