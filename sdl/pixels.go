@@ -5,7 +5,9 @@ package sdl
 */
 import "C"
 
+type Palette C.SDL_Palette
 type PixelFormat C.SDL_PixelFormat
+type PixelFormatDetails C.SDL_PixelFormatDetails
 
 const (
 	ALPHA_OPAQUE            uint8   = C.SDL_ALPHA_OPAQUE
@@ -70,3 +72,25 @@ const (
 	PIXELFORMAT_ABGR128_FLOAT PixelFormat = C.SDL_PIXELFORMAT_ABGR128_FLOAT
 	PIXELFORMAT_YV12          PixelFormat = C.SDL_PIXELFORMAT_YV12
 )
+
+func GetPixelFormatDetails(format PixelFormat) (*PixelFormatDetails, error) {
+	result := (*PixelFormatDetails)(
+		C.SDL_GetPixelFormatDetails(
+			(C.SDL_PixelFormat)(format),
+		),
+	)
+
+	return result, mapErrorPointer(result)
+}
+
+func MapRGB(format *PixelFormatDetails, palette *Palette, r uint8, g uint8, b uint8) uint32 {
+	return uint32(
+		C.SDL_MapRGB(
+			(*C.SDL_PixelFormatDetails)(format),
+			(*C.SDL_Palette)(palette),
+			(C.Uint8)(r),
+			(C.Uint8)(g),
+			(C.Uint8)(b),
+		),
+	)
+}

@@ -42,3 +42,6 @@ run-example-renderer-rectangles:
 
 run-example-renderer-textures:
 	go run ./examples/renderer/06-textures
+
+run-example-renderer-streaming-textures:
+	go run ./examples/renderer/07-streaming-textures

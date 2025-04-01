@@ -61,6 +61,18 @@ func DestroySurface(surface *Surface) {
 	)
 }
 
+func FillSurfaceRect(dst *Surface, rect *Rect, color uint32) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_FillSurfaceRect(
+				(*C.SDL_Surface)(dst),
+				(*C.SDL_Rect)(unsafe.Pointer(rect)),
+				(C.Uint32)(color),
+			),
+		),
+	)
+}
+
 func LoadBMP(file string) (*Surface, error) {
 	c_file := C.CString(file)
 	defer C.free(unsafe.Pointer(c_file))

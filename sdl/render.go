@@ -12,8 +12,27 @@ import (
 
 type Renderer C.SDL_Renderer
 type Texture C.SDL_Texture
+type TextureAccess C.SDL_TextureAccess
 
-const ()
+const (
+	TEXTUREACCESS_STATIC    TextureAccess = C.SDL_TEXTUREACCESS_STATIC
+	TEXTUREACCESS_STREAMING TextureAccess = C.SDL_TEXTUREACCESS_STREAMING
+	TEXTUREACCESS_TARGET    TextureAccess = C.SDL_TEXTUREACCESS_TARGET
+)
+
+func CreateTexture(renderer *Renderer, format PixelFormat, access TextureAccess, w int, h int) (*Texture, error) {
+	result := (*Texture)(
+		C.SDL_CreateTexture(
+			(*C.SDL_Renderer)(renderer),
+			(C.SDL_PixelFormat)(format),
+			(C.SDL_TextureAccess)(access),
+			(C.int)(w),
+			(C.int)(h),
+		),
+	)
+
+	return result, mapErrorPointer(result)
+}
 
 func CreateTextureFromSurface(renderer *Renderer, surface *Surface) (*Texture, error) {
 	result := (*Texture)(
@@ -82,6 +101,18 @@ func GetRenderScale(renderer *Renderer) (scaleX float32, scaleY float32, err err
 	)
 
 	return
+}
+
+func LockTextureToSurface(texture *Texture, rect *Rect, surface **Surface) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_LockTextureToSurface(
+				(*C.SDL_Texture)(texture),
+				(*C.SDL_Rect)(unsafe.Pointer(rect)),
+				(**C.SDL_Surface)(unsafe.Pointer(surface)),
+			),
+		),
+	)
 }
 
 func RenderClear(renderer *Renderer) error {
@@ -234,5 +265,11 @@ func SetRenderScale(renderer *Renderer, scaleX float32, scaleY float32) error {
 				C.float(scaleY),
 			),
 		),
+	)
+}
+
+func UnlockTexture(texture *Texture) {
+	C.SDL_UnlockTexture(
+		(*C.SDL_Texture)(texture),
 	)
 }
