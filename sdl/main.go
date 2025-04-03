@@ -65,6 +65,8 @@ type enterAppMainCallbacksState struct {
 	appEvent   reflect.Value
 	appQuit    reflect.Value
 	appState   reflect.Value
+
+	event *Event
 }
 
 var _enterAppMainCallbacksState enterAppMainCallbacksState
@@ -84,6 +86,8 @@ func EnterAppMainCallbacks[AppState any](
 		appIterate: reflect.ValueOf(appiterate),
 		appEvent:   reflect.ValueOf(appevent),
 		appQuit:    reflect.ValueOf(appquit),
+
+		event: nil,
 	}
 
 	return int(
@@ -112,9 +116,12 @@ func _SDL_AppIterate() AppResult {
 
 //export _SDL_AppEvent
 func _SDL_AppEvent(event *C.SDL_Event) AppResult {
-	goEvent := cEventPointerToEventPointer(event)
+	_enterAppMainCallbacksState.event = (*Event)(event)
 
-	values := _enterAppMainCallbacksState.appEvent.Call([]reflect.Value{_enterAppMainCallbacksState.appState, reflect.ValueOf(goEvent)})
+	values := _enterAppMainCallbacksState.appEvent.Call([]reflect.Value{
+		_enterAppMainCallbacksState.appState,
+		reflect.ValueOf(_enterAppMainCallbacksState.event),
+	})
 
 	return values[0].Interface().(AppResult)
 }

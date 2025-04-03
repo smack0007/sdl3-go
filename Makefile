@@ -16,14 +16,14 @@ lint:
 vet:
 	go vet ./...
 
-run-hello-world:
-	go run ./examples/hello-world
-
 run-scraper:
 	go run ./tools/scraper $(shell pkg-config sdl3 --cflags)
 
 run-sdlinfo:
 	go run ./tools/sdlinfo
+
+run-example-pollevent-basic:
+	go run ./examples/pollevent/01-basic
 
 run-example-renderer-clear:
 	go run ./examples/renderer/01-clear

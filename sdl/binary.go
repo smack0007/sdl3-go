@@ -3,33 +3,34 @@ package sdl
 import (
 	"encoding/binary"
 	"math"
+	"unsafe"
 )
 
-func readBool(data []byte, offset int) bool {
-	return data[offset] != 0
+func readBool[T any](data *T, offset int) bool {
+	return readUint8(data, offset) != 0
 }
 
-func readBytes(data []byte, offset int, length int) []byte {
-	return data[offset : offset+length]
+func readBytes[T any](data *T, offset int, length int) []byte {
+	return unsafe.Slice((*byte)(unsafe.Add((unsafe.Pointer)(data), offset)), length)
 }
 
-func readFloat32(data []byte, offset int) float32 {
-	return math.Float32frombits(binary.NativeEndian.Uint32(data[offset : offset+4]))
+func readFloat32[T any](data *T, offset int) float32 {
+	return math.Float32frombits(readUint32(data, offset))
 }
 
-func readInt32(data []byte, offset int) int32 {
+func readInt32[T any](data *T, offset int) int32 {
 	// TODO: Not sure this is correct.
-	return int32(binary.NativeEndian.Uint32(data[offset : offset+4]))
+	return (int32)(readUint32(data, offset))
 }
 
-func readUint8(data []byte, offset int) uint8 {
-	return data[offset]
+func readUint8[T any](data *T, offset int) uint8 {
+	return *(*uint8)(unsafe.Add((unsafe.Pointer)(data), offset))
 }
 
-func readUint16(data []byte, offset int) uint16 {
-	return binary.NativeEndian.Uint16(data[offset : offset+2])
+func readUint16[T any](data *T, offset int) uint16 {
+	return binary.NativeEndian.Uint16(readBytes(data, offset, 2))
 }
 
-func readUint32(data []byte, offset int) uint32 {
-	return binary.NativeEndian.Uint32(data[offset : offset+4])
+func readUint32[T any](data *T, offset int) uint32 {
+	return binary.NativeEndian.Uint32(readBytes(data, offset, 4))
 }

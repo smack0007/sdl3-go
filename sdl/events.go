@@ -34,19 +34,8 @@ package sdl
 #define offsetof_SDL_MouseButtonEvent_clicks offsetof(SDL_MouseButtonEvent, clicks)
 #define offsetof_SDL_MouseButtonEvent_x offsetof(SDL_MouseButtonEvent, x)
 #define offsetof_SDL_MouseButtonEvent_y offsetof(SDL_MouseButtonEvent, y)
-
-SDL_Event _event;
-
-static inline bool _SDL_PollEvent()
-{
-  return SDL_PollEvent(&_event);
-}
 */
 import "C"
-
-import (
-	"unsafe"
-)
 
 type EventType uint32
 
@@ -173,10 +162,10 @@ const (
 /*
  * Event
  */
-type Event []byte
+type Event C.SDL_Event
 
-func (event *Event) Type() EventType {
-	return EventType(readUint32(*event, C.offsetof_SDL_CommonEvent_type))
+func (event Event) Type() EventType {
+	return (EventType)(readUint32(&event, C.offsetof_SDL_CommonEvent_type))
 }
 
 /*
@@ -185,28 +174,28 @@ func (event *Event) Type() EventType {
 
 type WindowEvent Event
 
-func (event *Event) Window() *WindowEvent {
-	return (*WindowEvent)(event)
+func (event Event) Window() WindowEvent {
+	return (WindowEvent)(event)
 }
 
-func (event *WindowEvent) Type() EventType {
-	return EventType(readUint32(*event, C.offsetof_SDL_CommonEvent_type))
+func (event WindowEvent) Type() EventType {
+	return EventType(readUint32(&event, C.offsetof_SDL_CommonEvent_type))
 }
 
-func (event *WindowEvent) Timestamp() uint32 {
-	return readUint32(*event, C.offsetof_SDL_CommonEvent_timestamp)
+func (event WindowEvent) Timestamp() uint32 {
+	return readUint32(&event, C.offsetof_SDL_CommonEvent_timestamp)
 }
 
-func (event *WindowEvent) WindowID() WindowID {
-	return WindowID(readUint32(*event, C.offsetof_SDL_WindowEvent_windowID))
+func (event WindowEvent) WindowID() WindowID {
+	return WindowID(readUint32(&event, C.offsetof_SDL_WindowEvent_windowID))
 }
 
-func (event *WindowEvent) Data1() int32 {
-	return readInt32(*event, C.offsetof_SDL_WindowEvent_data1)
+func (event WindowEvent) Data1() int32 {
+	return readInt32(&event, C.offsetof_SDL_WindowEvent_data1)
 }
 
-func (event *WindowEvent) Data2() int32 {
-	return readInt32(*event, C.offsetof_SDL_WindowEvent_data2)
+func (event WindowEvent) Data2() int32 {
+	return readInt32(&event, C.offsetof_SDL_WindowEvent_data2)
 }
 
 /*
@@ -215,48 +204,48 @@ func (event *WindowEvent) Data2() int32 {
 
 type KeyboardEvent Event
 
-func (event *Event) Key() *KeyboardEvent {
-	return (*KeyboardEvent)(event)
+func (event Event) Key() KeyboardEvent {
+	return (KeyboardEvent)(event)
 }
 
-func (event *KeyboardEvent) Type() EventType {
-	return EventType(readUint32(*event, C.offsetof_SDL_CommonEvent_type))
+func (event KeyboardEvent) Type() EventType {
+	return EventType(readUint32(&event, C.offsetof_SDL_CommonEvent_type))
 }
 
-func (event *KeyboardEvent) Timestamp() uint32 {
-	return readUint32(*event, C.offsetof_SDL_CommonEvent_timestamp)
+func (event KeyboardEvent) Timestamp() uint32 {
+	return readUint32(&event, C.offsetof_SDL_CommonEvent_timestamp)
 }
 
-func (event *KeyboardEvent) WindowID() WindowID {
-	return WindowID(readUint32(*event, C.offsetof_SDL_KeyboardEvent_windowID))
+func (event KeyboardEvent) WindowID() WindowID {
+	return WindowID(readUint32(&event, C.offsetof_SDL_KeyboardEvent_windowID))
 }
 
-func (event *KeyboardEvent) Which() KeyboardID {
-	return KeyboardID(readUint32(*event, C.offsetof_SDL_KeyboardEvent_which))
+func (event KeyboardEvent) Which() KeyboardID {
+	return KeyboardID(readUint32(&event, C.offsetof_SDL_KeyboardEvent_which))
 }
 
-func (event *KeyboardEvent) Scancode() Scancode {
-	return Scancode(readUint32(*event, C.offsetof_SDL_KeyboardEvent_scancode))
+func (event KeyboardEvent) Scancode() Scancode {
+	return Scancode(readUint32(&event, C.offsetof_SDL_KeyboardEvent_scancode))
 }
 
-func (event *KeyboardEvent) Key() Keycode {
-	return Keycode(readInt32(*event, C.offsetof_SDL_KeyboardEvent_key))
+func (event KeyboardEvent) Key() Keycode {
+	return Keycode(readInt32(&event, C.offsetof_SDL_KeyboardEvent_key))
 }
 
-func (event *KeyboardEvent) Mod() Keycode {
-	return Keycode(readInt32(*event, C.offsetof_SDL_KeyboardEvent_mod))
+func (event KeyboardEvent) Mod() Keycode {
+	return Keycode(readInt32(&event, C.offsetof_SDL_KeyboardEvent_mod))
 }
 
-func (event *KeyboardEvent) Raw() uint16 {
-	return readUint16(*event, C.offsetof_SDL_KeyboardEvent_raw)
+func (event KeyboardEvent) Raw() uint16 {
+	return readUint16(&event, C.offsetof_SDL_KeyboardEvent_raw)
 }
 
-func (event *KeyboardEvent) Down() bool {
-	return readBool(*event, C.offsetof_SDL_KeyboardEvent_down)
+func (event KeyboardEvent) Down() bool {
+	return readBool(&event, C.offsetof_SDL_KeyboardEvent_down)
 }
 
-func (event *KeyboardEvent) Repeat() bool {
-	return readBool(*event, C.offsetof_SDL_KeyboardEvent_repeat)
+func (event KeyboardEvent) Repeat() bool {
+	return readBool(&event, C.offsetof_SDL_KeyboardEvent_repeat)
 }
 
 /*
@@ -265,44 +254,44 @@ func (event *KeyboardEvent) Repeat() bool {
 
 type MouseMotionEvent Event
 
-func (event *Event) Motion() *MouseMotionEvent {
-	return (*MouseMotionEvent)(event)
+func (event Event) Motion() MouseMotionEvent {
+	return (MouseMotionEvent)(event)
 }
 
-func (event *MouseMotionEvent) Type() EventType {
-	return EventType(readUint32(*event, C.offsetof_SDL_CommonEvent_type))
+func (event MouseMotionEvent) Type() EventType {
+	return EventType(readUint32(&event, C.offsetof_SDL_CommonEvent_type))
 }
 
-func (event *MouseMotionEvent) Timestamp() uint32 {
-	return readUint32(*event, C.offsetof_SDL_CommonEvent_timestamp)
+func (event MouseMotionEvent) Timestamp() uint32 {
+	return readUint32(&event, C.offsetof_SDL_CommonEvent_timestamp)
 }
 
-func (event *MouseMotionEvent) WindowID() WindowID {
-	return WindowID(readUint32(*event, C.offsetof_SDL_MouseMotionEvent_windowID))
+func (event MouseMotionEvent) WindowID() WindowID {
+	return WindowID(readUint32(&event, C.offsetof_SDL_MouseMotionEvent_windowID))
 }
 
-func (event *MouseMotionEvent) Which() uint32 {
-	return readUint32(*event, C.offsetof_SDL_MouseMotionEvent_which)
+func (event MouseMotionEvent) Which() uint32 {
+	return readUint32(&event, C.offsetof_SDL_MouseMotionEvent_which)
 }
 
-func (event *MouseMotionEvent) State() uint32 {
-	return readUint32(*event, C.offsetof_SDL_MouseMotionEvent_state)
+func (event MouseMotionEvent) State() uint32 {
+	return readUint32(&event, C.offsetof_SDL_MouseMotionEvent_state)
 }
 
-func (event *MouseMotionEvent) X() float32 {
-	return readFloat32(*event, C.offsetof_SDL_MouseMotionEvent_x)
+func (event MouseMotionEvent) X() float32 {
+	return readFloat32(&event, C.offsetof_SDL_MouseMotionEvent_x)
 }
 
-func (event *MouseMotionEvent) Y() float32 {
-	return readFloat32(*event, C.offsetof_SDL_MouseMotionEvent_y)
+func (event MouseMotionEvent) Y() float32 {
+	return readFloat32(&event, C.offsetof_SDL_MouseMotionEvent_y)
 }
 
-func (event *MouseMotionEvent) Xrel() float32 {
-	return readFloat32(*event, C.offsetof_SDL_MouseMotionEvent_xrel)
+func (event MouseMotionEvent) Xrel() float32 {
+	return readFloat32(&event, C.offsetof_SDL_MouseMotionEvent_xrel)
 }
 
-func (event *MouseMotionEvent) Yrel() float32 {
-	return readFloat32(*event, C.offsetof_SDL_MouseMotionEvent_yrel)
+func (event MouseMotionEvent) Yrel() float32 {
+	return readFloat32(&event, C.offsetof_SDL_MouseMotionEvent_yrel)
 }
 
 /*
@@ -311,57 +300,46 @@ func (event *MouseMotionEvent) Yrel() float32 {
 
 type MouseButtonEvent Event
 
-func (event *Event) Button() *MouseButtonEvent {
-	return (*MouseButtonEvent)(event)
+func (event Event) Button() MouseButtonEvent {
+	return (MouseButtonEvent)(event)
 }
 
-func (event *MouseButtonEvent) Type() EventType {
-	return EventType(readUint32(*event, C.offsetof_SDL_CommonEvent_type))
+func (event MouseButtonEvent) Type() EventType {
+	return EventType(readUint32(&event, C.offsetof_SDL_CommonEvent_type))
 }
 
-func (event *MouseButtonEvent) Timestamp() uint32 {
-	return readUint32(*event, C.offsetof_SDL_CommonEvent_timestamp)
+func (event MouseButtonEvent) Timestamp() uint32 {
+	return readUint32(&event, C.offsetof_SDL_CommonEvent_timestamp)
 }
 
-func (event *MouseButtonEvent) WindowID() WindowID {
-	return WindowID(readUint32(*event, C.offsetof_SDL_MouseButtonEvent_windowID))
+func (event MouseButtonEvent) WindowID() WindowID {
+	return WindowID(readUint32(&event, C.offsetof_SDL_MouseButtonEvent_windowID))
 }
 
-func (event *MouseButtonEvent) Which() uint32 {
-	return readUint32(*event, C.offsetof_SDL_MouseButtonEvent_which)
+func (event MouseButtonEvent) Which() uint32 {
+	return readUint32(&event, C.offsetof_SDL_MouseButtonEvent_which)
 }
 
-func (event *MouseButtonEvent) Button() uint8 {
-	return readUint8(*event, C.offsetof_SDL_MouseButtonEvent_button)
+func (event MouseButtonEvent) Button() uint8 {
+	return readUint8(&event, C.offsetof_SDL_MouseButtonEvent_button)
 }
 
-func (event *MouseButtonEvent) Clicks() uint8 {
-	return readUint8(*event, C.offsetof_SDL_MouseButtonEvent_clicks)
+func (event MouseButtonEvent) Clicks() uint8 {
+	return readUint8(&event, C.offsetof_SDL_MouseButtonEvent_clicks)
 }
 
-func (event *MouseButtonEvent) X() int32 {
-	return readInt32(*event, C.offsetof_SDL_MouseButtonEvent_x)
+func (event MouseButtonEvent) X() int32 {
+	return readInt32(&event, C.offsetof_SDL_MouseButtonEvent_x)
 }
 
-func (event *MouseButtonEvent) Y() int32 {
-	return readInt32(*event, C.offsetof_SDL_MouseButtonEvent_y)
+func (event MouseButtonEvent) Y() int32 {
+	return readInt32(&event, C.offsetof_SDL_MouseButtonEvent_y)
 }
 
 /*
  * Functions
  */
 
-func cEventPointerToEventPointer(event *C.SDL_Event) *Event {
-	goEvent := Event(C.GoBytes(unsafe.Pointer(event), C.sizeof_SDL_Event))
-	return &goEvent
-}
-
-func PollEvent() *Event {
-	result := bool(C._SDL_PollEvent())
-
-	if !result {
-		return nil
-	}
-
-	return cEventPointerToEventPointer(&C._event)
+func PollEvent(event *Event) bool {
+	return (bool)(C.SDL_PollEvent((*C.SDL_Event)(event)))
 }
