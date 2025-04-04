@@ -228,6 +228,22 @@ func RenderTexture(renderer *Renderer, texture *Texture, srcrect *FRect, dstrect
 	)
 }
 
+func RenderTextureRotated(renderer *Renderer, texture *Texture, srcrect *FRect, dstrect *FRect, angle float64, center *FPoint, flip FlipMode) error {
+	return mapErrorBool(
+		bool(
+			C.SDL_RenderTextureRotated(
+				(*C.SDL_Renderer)(renderer),
+				(*C.SDL_Texture)(texture),
+				(*C.SDL_FRect)(unsafe.Pointer(srcrect)),
+				(*C.SDL_FRect)(unsafe.Pointer(dstrect)),
+				(C.double)(angle),
+				(*C.SDL_FPoint)(unsafe.Pointer(center)),
+				(C.SDL_FlipMode)(flip),
+			),
+		),
+	)
+}
+
 func SetRenderDrawColor(renderer *Renderer, r uint8, g uint8, b uint8, a uint8) error {
 	return mapErrorBool(
 		bool(

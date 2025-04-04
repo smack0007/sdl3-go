@@ -105,7 +105,7 @@
       },
       "type": "process",
       "command": "make",
-      "args": ["run-example-pollevent-basic"],
+      "args": ["run-example-pollevent-01"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {
@@ -130,7 +130,7 @@
       },
       "type": "process",
       "command": "make",
-      "args": ["run-example-renderer-clear"],
+      "args": ["run-example-renderer-01"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {
@@ -155,7 +155,7 @@
       },
       "type": "process",
       "command": "make",
-      "args": ["run-example-renderer-primitives"],
+      "args": ["run-example-renderer-02"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {
@@ -180,7 +180,7 @@
       },
       "type": "process",
       "command": "make",
-      "args": ["run-example-renderer-lines"],
+      "args": ["run-example-renderer-03"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {
@@ -205,7 +205,7 @@
       },
       "type": "process",
       "command": "make",
-      "args": ["run-example-renderer-points"],
+      "args": ["run-example-renderer-04"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {
@@ -230,7 +230,7 @@
       },
       "type": "process",
       "command": "make",
-      "args": ["run-example-renderer-rectangles"],
+      "args": ["run-example-renderer-05"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {
@@ -255,7 +255,7 @@
       },
       "type": "process",
       "command": "make",
-      "args": ["run-example-renderer-textures"],
+      "args": ["run-example-renderer-06"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {
@@ -280,7 +280,32 @@
       },
       "type": "process",
       "command": "make",
-      "args": ["run-example-renderer-streaming-textures"],
+      "args": ["run-example-renderer-07"],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "GDK_BACKEND": "wayland"
+        }
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "Run Example Renderer 08 Rotating Textures",
+      "group": {
+        "kind": "none",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "type": "process",
+      "command": "make",
+      "args": ["run-example-renderer-08"],
       "options": {
         "cwd": "${workspaceFolder}",
         "env": {

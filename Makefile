@@ -23,26 +23,29 @@ run-scraper:
 run-sdlinfo:
 	go run ./tools/sdlinfo
 
-run-example-pollevent-basic:
+run-example-pollevent-01:
 	go run ./examples/pollevent/01-basic
 
-run-example-renderer-clear:
+run-example-renderer-01:
 	go run ./examples/renderer/01-clear
 
-run-example-renderer-primitives:
+run-example-renderer-02:
 	go run ./examples/renderer/02-primitives
 
-run-example-renderer-lines:
+run-example-renderer-03:
 	go run ./examples/renderer/03-lines
 
-run-example-renderer-points:
+run-example-renderer-04:
 	go run ./examples/renderer/04-points
 
-run-example-renderer-rectangles:
+run-example-renderer-05:
 	go run ./examples/renderer/05-rectangles
 
-run-example-renderer-textures:
+run-example-renderer-06:
 	go run ./examples/renderer/06-textures
 
-run-example-renderer-streaming-textures:
+run-example-renderer-07:
 	go run ./examples/renderer/07-streaming-textures
+
+run-example-renderer-08:
+	go run ./examples/renderer/08-rotating-textures
