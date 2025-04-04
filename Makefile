@@ -4,6 +4,7 @@ build:
 	go build -o ./bin/sdl-go ./sdl
 
 build-examples:
+	go build -o ./bin/examples/template ./examples/template.go
 	@find ./examples/*/* -type d -exec sh -c 'echo "Building {}..." && go build -o ./bin/{} {}' ';'
 
 clean:
