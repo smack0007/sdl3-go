@@ -12,7 +12,7 @@ ENV GOTOOLCHAIN=local
 ENV GOPATH=/go
 ENV PATH=/usr/local/go/bin:$PATH
 
-WORKDIR /app
+WORKDIR /data
 COPY ./env.sh ./go.mod ./
 COPY ./scripts/install-sdl-libs.sh ./scripts/install-sdl-libs.sh
 

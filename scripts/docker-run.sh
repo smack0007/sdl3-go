@@ -2,7 +2,12 @@
 set -e
 . "$(dirname $(realpath "${BASH_SOURCE[0]}"))/../env.sh"
 
-DOCKER_FLAGS="--rm -v .:/app"
+DOCKER_FLAGS="--rm -v .:/data/sdl-go ${DOCKER_FLAGS}"
+
+if [[ ! "${DOCKER_FLAGS}" == *" -w "* ]]; then
+  DOCKER_FLAGS="${DOCKER_FLAGS} -w /data/sdl-go"
+fi
+
 if [[ ! "${CI}" = "1" ]]; then 
   DOCKER_FLAGS="${DOCKER_FLAGS} -it"
 fi
