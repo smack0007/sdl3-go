@@ -25,7 +25,7 @@ RUN set -eux; \
 	rm go.tgz; \
     mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"; \
     go version; \
-    SUDO_CMD= CLEANUP=1 /app/scripts/install-sdl-libs.sh; \
+    SUDO_CMD= CLEANUP=1 /data/scripts/install-sdl-libs.sh; \
     apt-get remove -y ca-certificates git wget && apt-get autoremove -y && apt-get autoclean -y; \
-    rm -rf /app/tmp && rm -rf /var/lib/apt/lists/*;
+    rm -rf /data/tmp && rm -rf /var/lib/apt/lists/*;
     
