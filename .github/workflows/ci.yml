@@ -18,5 +18,6 @@ jobs:
       - name: Build sdl-go-template
         run: |
           git clone --depth=1 https://github.com/smack0007/sdl-go-template.git ../sdl-go-template
+          DOCKER_FLAGS="-v ${PWD}/../sdl-go-template:/data/sdl-go-template -w /data/sdl-go-template" ./scripts/docker-run.sh "go mod tidy"
           DOCKER_FLAGS="-v ${PWD}/../sdl-go-template:/data/sdl-go-template -w /data/sdl-go-template" ./scripts/docker-run.sh "make build" 
           
