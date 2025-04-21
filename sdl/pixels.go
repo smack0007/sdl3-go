@@ -2,6 +2,10 @@ package sdl
 
 /*
 #include <SDL3/SDL_pixels.h>
+
+static inline Uint8 _SDL_BytesPerPixel(SDL_PixelFormat pixelFormat) {
+	return SDL_BYTESPERPIXEL(pixelFormat);
+}
 */
 import "C"
 
@@ -72,6 +76,10 @@ const (
 	PIXELFORMAT_ABGR128_FLOAT PixelFormat = C.SDL_PIXELFORMAT_ABGR128_FLOAT
 	PIXELFORMAT_YV12          PixelFormat = C.SDL_PIXELFORMAT_YV12
 )
+
+func BytesPerPixel(format PixelFormat) uint8 {
+	return (uint8)(C._SDL_BytesPerPixel((C.SDL_PixelFormat)(format)))
+}
 
 func GetPixelFormatDetails(format PixelFormat) (*PixelFormatDetails, error) {
 	result := (*PixelFormatDetails)(
