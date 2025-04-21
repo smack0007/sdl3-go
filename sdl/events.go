@@ -229,11 +229,11 @@ func (event KeyboardEvent) Scancode() Scancode {
 }
 
 func (event KeyboardEvent) Key() Keycode {
-	return Keycode(readInt32(&event, C.offsetof_SDL_KeyboardEvent_key))
+	return (Keycode)(readUint32(&event, C.offsetof_SDL_KeyboardEvent_key))
 }
 
-func (event KeyboardEvent) Mod() Keycode {
-	return Keycode(readInt32(&event, C.offsetof_SDL_KeyboardEvent_mod))
+func (event KeyboardEvent) Mod() Keymod {
+	return (Keymod)(readUint16(&event, C.offsetof_SDL_KeyboardEvent_mod))
 }
 
 func (event KeyboardEvent) Raw() uint16 {

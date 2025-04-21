@@ -39,6 +39,7 @@ var TYPE_MAP = map[string]string{
 	"SDL_LOG_CATEGORY_": "int",
 	"SDL_LOG_PRIORITY_": "LogPriority",
 	"SDL_WINDOWPOS_":    "int",
+	"SDLK_":             "Keycode",
 }
 
 func main() {
@@ -103,9 +104,9 @@ func isString(name string) bool {
 type ParseState uint32
 
 const (
-	ParseStateNone ParseState = 0
-	ParseStateEnum ParseState = 1
-	ParseStateFunc ParseState = 2
+	ParseStateNone ParseState = iota
+	ParseStateEnum
+	ParseStateFunc
 )
 
 func parseFile(includeDirectory string, fileName string) {
@@ -178,6 +179,10 @@ func parseFile(includeDirectory string, fileName string) {
 }
 
 func stripPrefixes(input string) string {
+	if strings.HasPrefix(input, "SDLK_") {
+		return strings.TrimPrefix(input, "SDL")
+	}
+
 	return strings.TrimPrefix(input, "SDL_")
 }
 

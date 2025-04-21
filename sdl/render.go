@@ -73,6 +73,10 @@ func DestroyRenderer(renderer *Renderer) {
 	C.SDL_DestroyRenderer((*C.SDL_Renderer)(renderer))
 }
 
+func DestroyTexture(texture *Texture) {
+	C.SDL_DestroyTexture((*C.SDL_Texture)(texture))
+}
+
 func GetRenderDrawColor(renderer *Renderer) (r, g, b, a uint8, err error) {
 	err = mapErrorBool(
 		bool(
@@ -103,16 +107,18 @@ func GetRenderScale(renderer *Renderer) (scaleX float32, scaleY float32, err err
 	return
 }
 
-func LockTextureToSurface(texture *Texture, rect *Rect, surface **Surface) error {
-	return mapErrorBool(
-		bool(
-			C.SDL_LockTextureToSurface(
-				(*C.SDL_Texture)(texture),
-				(*C.SDL_Rect)(unsafe.Pointer(rect)),
-				(**C.SDL_Surface)(unsafe.Pointer(surface)),
-			),
+func LockTextureToSurface(texture *Texture, rect *Rect) (*Surface, error) {
+	var surface *C.SDL_Surface
+
+	result := bool(
+		C.SDL_LockTextureToSurface(
+			(*C.SDL_Texture)(texture),
+			(*C.SDL_Rect)(unsafe.Pointer(rect)),
+			(**C.SDL_Surface)(unsafe.Pointer(&surface)),
 		),
 	)
+
+	return (*Surface)(surface), mapErrorBool(result)
 }
 
 func RenderClear(renderer *Renderer) error {

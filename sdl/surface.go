@@ -55,6 +55,18 @@ func (surface *Surface) Refcount() int { return int(surface.refcount) }
 // Functions
 //
 
+func CreateSurface(width int, height int, format PixelFormat) (*Surface, error) {
+	result := (*Surface)(
+		C.SDL_CreateSurface(
+			(C.int)(width),
+			(C.int)(height),
+			(C.SDL_PixelFormat)(format),
+		),
+	)
+
+	return result, mapErrorPointer(result)
+}
+
 func DestroySurface(surface *Surface) {
 	C.SDL_DestroySurface(
 		(*C.SDL_Surface)(surface),
