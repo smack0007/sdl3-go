@@ -78,7 +78,6 @@ func AppEvent(appState *AppState, event *sdl.Event) sdl.AppResult {
 func AppIterate(appState *AppState) sdl.AppResult {
 	var dst_rect sdl.FRect
 	now := sdl.GetTicks()
-	var surface *sdl.Surface
 
 	/* we'll have some color move around over a few seconds. */
 	direction := float32(-1.0)
@@ -95,7 +94,7 @@ func AppIterate(appState *AppState) sdl.AppResult {
 	/* You can use SDL_LockTexture() to get an array of raw pixels, but we're going to use
 	   SDL_LockTextureToSurface() here, because it wraps that array in a temporary SDL_Surface,
 	   letting us use the surface drawing functions instead of lighting up individual pixels. */
-	err := sdl.LockTextureToSurface(appState.texture, nil, &surface)
+	surface, err := sdl.LockTextureToSurface(appState.texture, nil)
 	if err == nil {
 		var r sdl.Rect
 
