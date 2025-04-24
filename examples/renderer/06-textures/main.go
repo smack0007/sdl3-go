@@ -8,7 +8,7 @@
 package main
 
 import (
-	"fmt"
+	_ "embed"
 	"os"
 
 	"github.com/smack0007/sdl-go/sdl"
@@ -18,6 +18,9 @@ const (
 	WINDOW_WIDTH  = 640
 	WINDOW_HEIGHT = 480
 )
+
+//go:embed sample.bmp
+var sampleBmp []byte
 
 type AppState struct {
 	/* We will use this renderer to draw into this window every frame. */
@@ -52,13 +55,6 @@ func AppInit(argv []string) (sdl.AppResult, *AppState) {
 		return sdl.APP_FAILURE, nil
 	}
 
-	cwd, err := os.Getwd()
-
-	if err != nil {
-		sdl.Log("Failed to get working directory: %s", err)
-		return sdl.APP_FAILURE, nil
-	}
-
 	/* Textures are pixel data that we upload to the video hardware for fast drawing. Lots of 2D
 	   engines refer to these as "sprites." We'll do a static texture (upload once, draw many
 	   times) with data from a bitmap file. */
@@ -66,9 +62,13 @@ func AppInit(argv []string) (sdl.AppResult, *AppState) {
 	/* SDL_Surface is pixel data the CPU can access. SDL_Texture is pixel data the GPU can access.
 	   Load a .bmp into a surface, move it to a texture from there. */
 
-	// TODO: For now just assume cwd is the root of the repo. Eventually move to #embed.
-	bmp_path := fmt.Sprintf("%s/assets/sample.bmp", cwd) /* allocate a string of the full file path */
-	surface, err := sdl.LoadBMP(bmp_path)
+	io, err := sdl.IOFromConstMem(&sampleBmp[0], (uint64)(len(sampleBmp)))
+	if err != nil {
+		sdl.Log("Couldn't create bitmap io: %s", err)
+		return sdl.APP_FAILURE, nil
+	}
+
+	surface, err := sdl.LoadBMP_IO(io, true)
 	if err != nil {
 		sdl.Log("Couldn't load bitmap: %s", err)
 		return sdl.APP_FAILURE, nil
@@ -132,14 +132,14 @@ func AppIterate(appState *AppState) sdl.AppResult {
 	sdl.RenderTexture(appState.renderer, appState.texture, nil, &dst_rect)
 
 	/* center this one. */
-	dst_rect.X = float32(WINDOW_WIDTH - appState.texture_width) / 2.0
-	dst_rect.Y = float32(WINDOW_HEIGHT - appState.texture_height) / 2.0
+	dst_rect.X = float32(WINDOW_WIDTH-appState.texture_width) / 2.0
+	dst_rect.Y = float32(WINDOW_HEIGHT-appState.texture_height) / 2.0
 	dst_rect.W = float32(appState.texture_width)
 	dst_rect.H = float32(appState.texture_height)
 	sdl.RenderTexture(appState.renderer, appState.texture, nil, &dst_rect)
 
 	/* bottom right. */
-	dst_rect.X = float32(WINDOW_WIDTH - appState.texture_width) - (100.0 * scale)
+	dst_rect.X = float32(WINDOW_WIDTH-appState.texture_width) - (100.0 * scale)
 	dst_rect.Y = float32(WINDOW_HEIGHT - appState.texture_height)
 	dst_rect.W = float32(appState.texture_width)
 	dst_rect.H = float32(appState.texture_height)

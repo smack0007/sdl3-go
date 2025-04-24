@@ -97,3 +97,14 @@ func LoadBMP(file string) (*Surface, error) {
 
 	return (*Surface)(result), mapErrorPointer(result)
 }
+
+func LoadBMP_IO(src *IOStream, closeio bool) (*Surface, error) {
+	result := (*Surface)(unsafe.Pointer(
+		C.SDL_LoadBMP_IO(
+			(*C.SDL_IOStream)(unsafe.Pointer(src)),
+			(C.bool)(closeio),
+		),
+	))
+
+	return result, mapErrorPointer(result)
+}
