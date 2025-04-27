@@ -64,7 +64,7 @@ func CreateSurface(width int, height int, format PixelFormat) (*Surface, error) 
 		),
 	)
 
-	return result, mapErrorPointer(result)
+	return result, PointerToError(result)
 }
 
 func DestroySurface(surface *Surface) {
@@ -74,7 +74,7 @@ func DestroySurface(surface *Surface) {
 }
 
 func FillSurfaceRect(dst *Surface, rect *Rect, color uint32) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_FillSurfaceRect(
 				(*C.SDL_Surface)(dst),
@@ -95,7 +95,7 @@ func LoadBMP(file string) (*Surface, error) {
 		return nil, GetError()
 	}
 
-	return (*Surface)(result), mapErrorPointer(result)
+	return (*Surface)(result), PointerToError(result)
 }
 
 func LoadBMP_IO(src *IOStream, closeio bool) (*Surface, error) {
@@ -106,5 +106,5 @@ func LoadBMP_IO(src *IOStream, closeio bool) (*Surface, error) {
 		),
 	))
 
-	return result, mapErrorPointer(result)
+	return result, PointerToError(result)
 }

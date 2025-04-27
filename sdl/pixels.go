@@ -88,7 +88,7 @@ func GetPixelFormatDetails(format PixelFormat) (*PixelFormatDetails, error) {
 		),
 	)
 
-	return result, mapErrorPointer(result)
+	return result, PointerToError(result)
 }
 
 func MapRGB(format *PixelFormatDetails, palette *Palette, r uint8, g uint8, b uint8) uint32 {

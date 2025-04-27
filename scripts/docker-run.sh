@@ -12,7 +12,7 @@ if [[ ! "${CI}" = "1" ]]; then
   DOCKER_FLAGS="${DOCKER_FLAGS} -it"
 fi
 
-CONTAINER_NAME="smack0007/sdl-go:${GO_VERSION}_${SDL_VERSION}"
+CONTAINER_NAME="smack0007/sdl-go:go-${GO_VERSION}_sdl-${SDL_VERSION}_image-${SDL_IMAGE_VERSION}"
 
 DOCKER_CMD=${1:-/bin/bash}
 

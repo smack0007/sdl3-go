@@ -51,5 +51,5 @@ func IOFromConstMem[T any](mem *T, size uint64) (*IOStream, error) {
 		),
 	)
 
-	return result, mapErrorPointer(result)
+	return result, PointerToError(result)
 }

@@ -9,7 +9,7 @@ import (
 	"errors"
 )
 
-func mapErrorBool(result bool) error {
+func BoolToError(result bool) error {
 	if result {
 		return nil
 	}
@@ -17,7 +17,7 @@ func mapErrorBool(result bool) error {
 	return GetError()
 }
 
-func mapErrorPointer(pointer any) error {
+func PointerToError(pointer any) error {
 	if pointer != nil {
 		return nil
 	}

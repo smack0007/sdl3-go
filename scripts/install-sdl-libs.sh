@@ -4,6 +4,15 @@ set -e
 
 SUDO_CMD=${SUDO_CMD:sudo}
 
+BASE_SDL_URL="https://github.com/libsdl-org/"
+
+LIBS="SDL SDL_image"
+
+declare -A GIT_TAGS=(
+  ["SDL"]="${SDL_TAG}"
+  ["SDL_image"]="${SDL_IMAGE_TAG}"
+)
+
 if type "apt" > /dev/null; then
   # "build-essential", "make" and "pkg-config" are assumed to be installed 
   ${SUDO_CMD} apt-get install --no-install-recommends -y \
@@ -17,13 +26,16 @@ fi
 
 cd ${REPO_PATH}
 
-[[ -d ${TMP_DIR}/SDL ]] && rm -rf ${TMP_DIR}/SDL
-git clone --depth 1 --branch ${SDL_TAG} https://github.com/libsdl-org/SDL.git ${TMP_DIR}/SDL
-mkdir ${TMP_DIR}/SDL/build
-cd ${TMP_DIR}/SDL/build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build . --config Release --parallel
-${SUDO_CMD} cmake --install . --config Release
+[[ -d ${TMP_DIR} ]] && rm -rf ${TMP_DIR}
+mkdir ${TMP_DIR}
+for lib in $LIBS; do
+  git clone --depth 1 --branch ${GIT_TAGS[$lib]} ${BASE_SDL_URL}${lib}.git ${TMP_DIR}/$lib
+  mkdir ${TMP_DIR}/${lib}/build
+  cd ${TMP_DIR}/${lib}/build
+  cmake -DCMAKE_BUILD_TYPE=Release ..
+  cmake --build . --config Release --parallel
+  ${SUDO_CMD} cmake --install . --config Release
+done
 
 if [[ "${CLEANUP}" = "1" ]]; then
   if type "apt" > /dev/null; then
