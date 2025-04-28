@@ -306,8 +306,8 @@ func writeFuncs(output string, funcs []string) string {
 			funcOutput += indent(indentLevel)
 
 			if mapErrorFunc != "" {
-				if mapErrorFunc == "ErrorToBool" {
-					funcOutput += "return ErrorToBool(\n"
+				if mapErrorFunc == "BoolToError" {
+					funcOutput += "return BoolToError(\n"
 					indentLevel += 1
 					funcOutput += indent(indentLevel)
 				} else if mapErrorFunc == "PointerToError" {

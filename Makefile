@@ -1,5 +1,8 @@
 REPO_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
+CP    := cp -u
+MKDIR := mkdir -p
+
 build:
 	go build -o ./bin/sdl-go/sdl ./sdl
 	go build -o ./bin/sdl-go/img ./img
@@ -25,8 +28,8 @@ run-sdlinfo:
 	go run ./tools/sdlinfo
 
 run-example-img-01:
-	mkdir -p ./examples/img/01-show-image/assets
-	cp ./assets/sample.png ./examples/img/01-show-image/assets/sample.png
+	$(MKDIR) ./examples/img/01-show-image/assets
+	$(CP) ./assets/sample.png ./examples/img/01-show-image/assets/sample.png
 	go run ./examples/img/01-show-image
 
 run-example-pollevent-01:
