@@ -15,11 +15,20 @@ func Load(file string) (*sdl.Surface, error) {
 	c_file := C.CString(file)
 	defer C.free(unsafe.Pointer(c_file))
 
-	result := C.IMG_Load(c_file)
+	result := (*sdl.Surface)(unsafe.Pointer(
+		C.IMG_Load(c_file),
+	))
 
-	if result == nil {
-		return nil, sdl.GetError()
-	}
+	return result, sdl.PointerToError(result)
+}
 
-	return (*sdl.Surface)(unsafe.Pointer(result)), sdl.PointerToError(result)
+func Load_IO(src *sdl.IOStream, closeio bool) (*sdl.Surface, error) {
+	result := (*sdl.Surface)(unsafe.Pointer(
+		C.IMG_Load_IO(
+			(*C.SDL_IOStream)(unsafe.Pointer(src)),
+			(C.bool)(closeio),
+		),
+	))
+
+	return result, sdl.PointerToError(result)
 }

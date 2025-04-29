@@ -4,8 +4,8 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/smack0007/sdl-go/img"
 	"github.com/smack0007/sdl-go/sdl"
+	"github.com/smack0007/sdl-go/img"
 )
 
 const (
@@ -40,6 +40,15 @@ func run() int {
 	defer sdl.DestroyRenderer(renderer)
 
 	surface, err := img.Load("assets/sample.png")
+
+	// io, err := sdl.IOFromFile("assets/sample.png", "r")
+
+	// if err != nil {
+	// 	sdl.Log("Couldn't load sample.png: %s", err)
+	// 	return 1
+	// }
+
+	// surface, err := img.Load_IO(io, true)
 
 	if err != nil {
 		sdl.Log("Couldn't load sample.png: %s", err)
