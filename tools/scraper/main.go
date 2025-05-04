@@ -277,10 +277,10 @@ func writeFuncs(output string, funcs []string) string {
 			returnTypeToOutput := mappedReturnType
 
 			if mappedReturnType == "bool" {
-				mapErrorFunc = "mapErrorBool"
+				mapErrorFunc = "BoolToError"
 				returnTypeToOutput = "error"
 			} else if isPointer(mappedReturnType) {
-				mapErrorFunc = "mapErrorPointer"
+				mapErrorFunc = "PointerToError"
 				returnTypeToOutput = "(" + mappedReturnType + ", error)"
 			}
 
@@ -306,11 +306,11 @@ func writeFuncs(output string, funcs []string) string {
 			funcOutput += indent(indentLevel)
 
 			if mapErrorFunc != "" {
-				if mapErrorFunc == "mapErrorBool" {
-					funcOutput += "return mapErrorBool(\n"
+				if mapErrorFunc == "BoolToError" {
+					funcOutput += "return BoolToError(\n"
 					indentLevel += 1
 					funcOutput += indent(indentLevel)
-				} else if mapErrorFunc == "mapErrorPointer" {
+				} else if mapErrorFunc == "PointerToError" {
 					funcOutput += "result := "
 				}
 			} else {
@@ -353,13 +353,13 @@ func writeFuncs(output string, funcs []string) string {
 			indentLevel -= 1
 			funcOutput += indent(indentLevel)
 
-			if mapErrorFunc == "mapErrorBool" {
+			if mapErrorFunc == "BoolToError" {
 				funcOutput += "),\n"
 				indentLevel -= 1
 				funcOutput += indent(indentLevel) + ")\n"
-			} else if mapErrorFunc == "mapErrorPointer" {
+			} else if mapErrorFunc == "PointerToError" {
 				funcOutput += "))\n\n"
-				funcOutput += indent(indentLevel) + "return result, mapErrorPointer(result)\n"
+				funcOutput += indent(indentLevel) + "return result, PointerToError(result)\n"
 			} else {
 				funcOutput += ")\n"
 			}

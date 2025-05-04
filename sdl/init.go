@@ -41,7 +41,7 @@ type AppEvent_func[AppState any] func(appState *AppState, event *Event) AppResul
 type AppQuit_func[AppState any] func(appState *AppState, result AppResult)
 
 func Init(flags InitFlags) error {
-	return mapErrorBool(bool(C.SDL_Init(C.Uint32(flags))))
+	return BoolToError(bool(C.SDL_Init(C.Uint32(flags))))
 }
 
 func Quit() {
@@ -58,7 +58,7 @@ func SetAppMetadata(appname string, appversion string, appidentifier string) err
 	c_appidentifier := C.CString(appidentifier)
 	defer C.free(unsafe.Pointer(c_appidentifier))
 
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_SetAppMetadata(
 				c_appname,

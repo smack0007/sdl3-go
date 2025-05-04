@@ -1,6 +1,7 @@
 package sdl
 
 /*
+#include <stdlib.h>
 #include <SDL3/SDL_iostream.h>
 */
 import "C"
@@ -51,5 +52,22 @@ func IOFromConstMem[T any](mem *T, size uint64) (*IOStream, error) {
 		),
 	)
 
-	return result, mapErrorPointer(result)
+	return result, PointerToError(result)
+}
+
+func IOFromFile(file string, mode string) (*IOStream, error) {
+	c_file := C.CString(file)
+	defer C.free(unsafe.Pointer(c_file))
+
+	c_mode := C.CString(mode)
+	defer C.free(unsafe.Pointer(c_mode))
+
+	result := (*IOStream)(
+		C.SDL_IOFromFile(
+			c_file,
+			c_mode,
+		),
+	)
+
+	return result, PointerToError(result)
 }

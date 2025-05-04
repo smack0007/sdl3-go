@@ -67,7 +67,7 @@ func CreateWindow(
 		C.SDL_WindowFlags(flags),
 	)))
 
-	return result, mapErrorPointer(result)
+	return result, PointerToError(result)
 }
 
 func DestroyWindow(window *Window) {
@@ -75,7 +75,7 @@ func DestroyWindow(window *Window) {
 }
 
 func FlashWindow(window *Window, operation FlashOperation) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_FlashWindow(
 				(*C.SDL_Window)(unsafe.Pointer(window)),
@@ -86,7 +86,7 @@ func FlashWindow(window *Window, operation FlashOperation) error {
 }
 
 func GetWindowSizeInPixels(window *Window) (w int, h int, err error) {
-	err = mapErrorBool(
+	err = BoolToError(
 		bool(
 			C.SDL_GetWindowSizeInPixels(
 				(*C.SDL_Window)(unsafe.Pointer(window)),
@@ -106,11 +106,11 @@ func GetWindowSurface(window *Window) (*Surface, error) {
 		),
 	))
 
-	return result, mapErrorPointer(result)
+	return result, PointerToError(result)
 }
 
 func HideWindow(window *Window) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_HideWindow(
 				(*C.SDL_Window)(unsafe.Pointer(window)),
@@ -123,7 +123,7 @@ func SetWindowTitle(window *Window, title string) error {
 	c_title := C.CString(title)
 	defer C.free(unsafe.Pointer(c_title))
 
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_SetWindowTitle(
 				(*C.SDL_Window)(unsafe.Pointer(window)),
@@ -134,7 +134,7 @@ func SetWindowTitle(window *Window, title string) error {
 }
 
 func ShowWindow(window *Window) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_ShowWindow(
 				(*C.SDL_Window)(unsafe.Pointer(window)),
@@ -144,5 +144,5 @@ func ShowWindow(window *Window) error {
 }
 
 func UpdateWindowSurface(window *Window) error {
-	return mapErrorBool(bool(C.SDL_UpdateWindowSurface((*C.SDL_Window)(unsafe.Pointer(window)))))
+	return BoolToError(bool(C.SDL_UpdateWindowSurface((*C.SDL_Window)(unsafe.Pointer(window)))))
 }

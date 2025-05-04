@@ -31,7 +31,7 @@ func CreateTexture(renderer *Renderer, format PixelFormat, access TextureAccess,
 		),
 	)
 
-	return result, mapErrorPointer(result)
+	return result, PointerToError(result)
 }
 
 func CreateTextureFromSurface(renderer *Renderer, surface *Surface) (*Texture, error) {
@@ -42,7 +42,7 @@ func CreateTextureFromSurface(renderer *Renderer, surface *Surface) (*Texture, e
 		),
 	)
 
-	return result, mapErrorPointer(result)
+	return result, PointerToError(result)
 }
 
 func CreateWindowAndRenderer(
@@ -53,7 +53,7 @@ func CreateWindowAndRenderer(
 	c_title := C.CString(title)
 	defer C.free(unsafe.Pointer(c_title))
 
-	err = mapErrorBool(
+	err = BoolToError(
 		bool(
 			C.SDL_CreateWindowAndRenderer(
 				c_title,
@@ -78,7 +78,7 @@ func DestroyTexture(texture *Texture) {
 }
 
 func GetRenderDrawColor(renderer *Renderer) (r, g, b, a uint8, err error) {
-	err = mapErrorBool(
+	err = BoolToError(
 		bool(
 			C.SDL_GetRenderDrawColor(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -94,7 +94,7 @@ func GetRenderDrawColor(renderer *Renderer) (r, g, b, a uint8, err error) {
 }
 
 func GetRenderScale(renderer *Renderer) (scaleX float32, scaleY float32, err error) {
-	err = mapErrorBool(
+	err = BoolToError(
 		bool(
 			C.SDL_GetRenderScale(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -118,11 +118,11 @@ func LockTextureToSurface(texture *Texture, rect *Rect) (*Surface, error) {
 		),
 	)
 
-	return (*Surface)(surface), mapErrorBool(result)
+	return (*Surface)(surface), BoolToError(result)
 }
 
 func RenderClear(renderer *Renderer) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_RenderClear(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -132,14 +132,14 @@ func RenderClear(renderer *Renderer) error {
 }
 
 func RenderFillRect(renderer *Renderer, rect *FRect) error {
-	return mapErrorBool((bool)(C.SDL_RenderFillRect(
+	return BoolToError((bool)(C.SDL_RenderFillRect(
 		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
 		(*C.SDL_FRect)(unsafe.Pointer(rect)),
 	)))
 }
 
 func RenderFillRects(renderer *Renderer, rects []FRect, count int) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_RenderFillRects(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -151,7 +151,7 @@ func RenderFillRects(renderer *Renderer, rects []FRect, count int) error {
 }
 
 func RenderLine(renderer *Renderer, x1 float32, y1 float32, x2 float32, y2 float32) error {
-	return mapErrorBool((bool)(C.SDL_RenderLine(
+	return BoolToError((bool)(C.SDL_RenderLine(
 		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
 		C.float(x1),
 		C.float(y1),
@@ -161,7 +161,7 @@ func RenderLine(renderer *Renderer, x1 float32, y1 float32, x2 float32, y2 float
 }
 
 func RenderLines(renderer *Renderer, points []FPoint, count int) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_RenderLines(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -173,7 +173,7 @@ func RenderLines(renderer *Renderer, points []FPoint, count int) error {
 }
 
 func RenderPoint(renderer *Renderer, x float32, y float32) error {
-	return mapErrorBool((bool)(C.SDL_RenderPoint(
+	return BoolToError((bool)(C.SDL_RenderPoint(
 		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
 		C.float(x),
 		C.float(y),
@@ -181,7 +181,7 @@ func RenderPoint(renderer *Renderer, x float32, y float32) error {
 }
 
 func RenderPoints(renderer *Renderer, points []FPoint, count int) error {
-	return mapErrorBool((bool)(C.SDL_RenderPoints(
+	return BoolToError((bool)(C.SDL_RenderPoints(
 		(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
 		(*C.SDL_FPoint)(unsafe.Pointer(&points[0])),
 		C.int(count),
@@ -189,7 +189,7 @@ func RenderPoints(renderer *Renderer, points []FPoint, count int) error {
 }
 
 func RenderRect(renderer *Renderer, rect *FRect) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_RenderRect(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -200,7 +200,7 @@ func RenderRect(renderer *Renderer, rect *FRect) error {
 }
 
 func RenderRects(renderer *Renderer, rects []FRect, count int) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_RenderRects(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -212,7 +212,7 @@ func RenderRects(renderer *Renderer, rects []FRect, count int) error {
 }
 
 func RenderPresent(renderer *Renderer) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_RenderPresent(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -222,7 +222,7 @@ func RenderPresent(renderer *Renderer) error {
 }
 
 func RenderTexture(renderer *Renderer, texture *Texture, srcrect *FRect, dstrect *FRect) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_RenderTexture(
 				(*C.SDL_Renderer)(renderer),
@@ -235,7 +235,7 @@ func RenderTexture(renderer *Renderer, texture *Texture, srcrect *FRect, dstrect
 }
 
 func RenderTextureRotated(renderer *Renderer, texture *Texture, srcrect *FRect, dstrect *FRect, angle float64, center *FPoint, flip FlipMode) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_RenderTextureRotated(
 				(*C.SDL_Renderer)(renderer),
@@ -251,7 +251,7 @@ func RenderTextureRotated(renderer *Renderer, texture *Texture, srcrect *FRect, 
 }
 
 func SetRenderDrawColor(renderer *Renderer, r uint8, g uint8, b uint8, a uint8) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_SetRenderDrawColor(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -265,7 +265,7 @@ func SetRenderDrawColor(renderer *Renderer, r uint8, g uint8, b uint8, a uint8) 
 }
 
 func SetRenderDrawColorFloat(renderer *Renderer, r float32, g float32, b float32, a float32) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_SetRenderDrawColorFloat(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),
@@ -279,7 +279,7 @@ func SetRenderDrawColorFloat(renderer *Renderer, r float32, g float32, b float32
 }
 
 func SetRenderScale(renderer *Renderer, scaleX float32, scaleY float32) error {
-	return mapErrorBool(
+	return BoolToError(
 		bool(
 			C.SDL_SetRenderScale(
 				(*C.SDL_Renderer)(unsafe.Pointer(renderer)),

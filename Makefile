@@ -1,11 +1,15 @@
 REPO_PATH := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
+CP    := cp -u
+MKDIR := mkdir -p
+
 build:
-	go build -o ./bin/sdl-go ./sdl
+	go build -o ./bin/sdl-go/sdl ./sdl
+	go build -o ./bin/sdl-go/img ./img
 
 build-examples:
 	go build -o ./bin/examples/template ./examples/template.go
-	@find ./examples/*/* -type d -exec sh -c 'echo "Building {}..." && go build -o ./bin/{} {}' ';'
+	@for dir in ./examples/*/*; do echo "Building $$dir..."; go build -o ./bin/$$dir $$dir; done
 
 clean:
 	go clean
@@ -22,6 +26,11 @@ run-scraper:
 
 run-sdlinfo:
 	go run ./tools/sdlinfo
+
+run-example-img-01:
+	$(MKDIR) ./examples/img/01-show-image/assets
+	$(CP) ./assets/sample.png ./examples/img/01-show-image/assets/sample.png
+	go run ./examples/img/01-show-image
 
 run-example-pollevent-01:
 	go run ./examples/pollevent/01-basic
