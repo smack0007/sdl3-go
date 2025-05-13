@@ -19,7 +19,7 @@ func Load(file string) (*sdl.Surface, error) {
 		C.IMG_Load(c_file),
 	))
 
-	return result, sdl.PointerToError(result)
+	return result, sdl.PointerToError(unsafe.Pointer(result))
 }
 
 func Load_IO(src *sdl.IOStream, closeio bool) (*sdl.Surface, error) {
@@ -30,5 +30,5 @@ func Load_IO(src *sdl.IOStream, closeio bool) (*sdl.Surface, error) {
 		),
 	))
 
-	return result, sdl.PointerToError(result)
+	return result, sdl.PointerToError(unsafe.Pointer(result))
 }

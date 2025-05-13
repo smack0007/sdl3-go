@@ -7,6 +7,7 @@ import "C"
 
 import (
 	"errors"
+	"unsafe"
 )
 
 func BoolToError(result bool) error {
@@ -17,7 +18,7 @@ func BoolToError(result bool) error {
 	return GetError()
 }
 
-func PointerToError(pointer any) error {
+func PointerToError(pointer unsafe.Pointer) error {
 	if pointer != nil {
 		return nil
 	}
