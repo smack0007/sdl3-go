@@ -359,7 +359,7 @@ func writeFuncs(output string, funcs []string) string {
 				funcOutput += indent(indentLevel) + ")\n"
 			} else if mapErrorFunc == "PointerToError" {
 				funcOutput += "))\n\n"
-				funcOutput += indent(indentLevel) + "return result, PointerToError(result)\n"
+				funcOutput += indent(indentLevel) + "return result, PointerToError(unsafe.Pointer(result))\n"
 			} else {
 				funcOutput += ")\n"
 			}

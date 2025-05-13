@@ -64,7 +64,7 @@ func CreateSurface(width int, height int, format PixelFormat) (*Surface, error) 
 		),
 	)
 
-	return result, PointerToError(result)
+	return result, PointerToError(unsafe.Pointer(result))
 }
 
 func DestroySurface(surface *Surface) {
@@ -95,7 +95,7 @@ func LoadBMP(file string) (*Surface, error) {
 		return nil, GetError()
 	}
 
-	return (*Surface)(result), PointerToError(result)
+	return (*Surface)(result), PointerToError(unsafe.Pointer(result))
 }
 
 func LoadBMP_IO(src *IOStream, closeio bool) (*Surface, error) {
@@ -106,5 +106,5 @@ func LoadBMP_IO(src *IOStream, closeio bool) (*Surface, error) {
 		),
 	))
 
-	return result, PointerToError(result)
+	return result, PointerToError(unsafe.Pointer(result))
 }

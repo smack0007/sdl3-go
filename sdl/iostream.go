@@ -52,7 +52,7 @@ func IOFromConstMem[T any](mem *T, size uint64) (*IOStream, error) {
 		),
 	)
 
-	return result, PointerToError(result)
+	return result, PointerToError(unsafe.Pointer(result))
 }
 
 func IOFromFile(file string, mode string) (*IOStream, error) {
@@ -69,5 +69,5 @@ func IOFromFile(file string, mode string) (*IOStream, error) {
 		),
 	)
 
-	return result, PointerToError(result)
+	return result, PointerToError(unsafe.Pointer(result))
 }

@@ -67,7 +67,7 @@ func CreateWindow(
 		C.SDL_WindowFlags(flags),
 	)))
 
-	return result, PointerToError(result)
+	return result, PointerToError(unsafe.Pointer(result))
 }
 
 func DestroyWindow(window *Window) {
@@ -106,7 +106,7 @@ func GetWindowSurface(window *Window) (*Surface, error) {
 		),
 	))
 
-	return result, PointerToError(result)
+	return result, PointerToError(unsafe.Pointer(result))
 }
 
 func HideWindow(window *Window) error {

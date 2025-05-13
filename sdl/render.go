@@ -31,7 +31,7 @@ func CreateTexture(renderer *Renderer, format PixelFormat, access TextureAccess,
 		),
 	)
 
-	return result, PointerToError(result)
+	return result, PointerToError(unsafe.Pointer(result))
 }
 
 func CreateTextureFromSurface(renderer *Renderer, surface *Surface) (*Texture, error) {
@@ -42,7 +42,7 @@ func CreateTextureFromSurface(renderer *Renderer, surface *Surface) (*Texture, e
 		),
 	)
 
-	return result, PointerToError(result)
+	return result, PointerToError(unsafe.Pointer(result))
 }
 
 func CreateWindowAndRenderer(

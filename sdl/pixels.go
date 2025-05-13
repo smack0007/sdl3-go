@@ -8,6 +8,7 @@ static inline Uint8 _SDL_BytesPerPixel(SDL_PixelFormat pixelFormat) {
 }
 */
 import "C"
+import "unsafe"
 
 type Palette C.SDL_Palette
 type PixelFormat C.SDL_PixelFormat
@@ -88,7 +89,7 @@ func GetPixelFormatDetails(format PixelFormat) (*PixelFormatDetails, error) {
 		),
 	)
 
-	return result, PointerToError(result)
+	return result, PointerToError(unsafe.Pointer(result))
 }
 
 func MapRGB(format *PixelFormatDetails, palette *Palette, r uint8, g uint8, b uint8) uint32 {
