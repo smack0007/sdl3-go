@@ -2,8 +2,6 @@
 set -e
 . "$(dirname $(realpath "${BASH_SOURCE[0]}"))/../env.sh"
 
-SUDO_CMD=${SUDO_CMD:sudo}
-
 BASE_SDL_URL="https://github.com/libsdl-org/"
 
 LIBS="SDL SDL_image"
@@ -13,9 +11,9 @@ declare -A GIT_TAGS=(
   ["SDL_image"]="${SDL_IMAGE_TAG}"
 )
 
-if type "apt" > /dev/null; then
+if type "apt-get" > /dev/null; then
   # "build-essential", "make" and "pkg-config" are assumed to be installed 
-  ${SUDO_CMD} apt-get install --no-install-recommends -y \
+  apt-get install --no-install-recommends -y \
     cmake ninja-build gnome-desktop-testing libasound2-dev libpulse-dev \
     libaudio-dev libjack-dev libsndio-dev libx11-dev libxext-dev \
     libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev \
@@ -34,12 +32,12 @@ for lib in $LIBS; do
   cd ${TMP_DIR}/${lib}/build
   cmake -DCMAKE_BUILD_TYPE=Release ..
   cmake --build . --config Release --parallel
-  ${SUDO_CMD} cmake --install . --config Release
+  cmake --install . --config Release
 done
 
 if [[ "${CLEANUP}" = "1" ]]; then
-  if type "apt" > /dev/null; then
-    ${SUDO_CMD} apt-get remove -y \
+  if type "apt-get" > /dev/null; then
+    apt-get remove -y \
       cmake ninja-build gnome-desktop-testing libasound2-dev libpulse-dev \
       libaudio-dev libjack-dev libsndio-dev libx11-dev libxext-dev \
       libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev \

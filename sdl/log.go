@@ -9,6 +9,8 @@ static inline void _SDL_Log(const char *str)
   SDL_Log("%s", str);
 }
 
+#pragma GCC diagnostic ignored "-Wformat-security"
+
 static inline void _SDL_LogCritical(int category,
                                     const char *str)
 {
@@ -72,6 +74,8 @@ static inline void _SDL_LogWarn(int category,
   SDL_LogWarn(category, str);
 #pragma clang diagnostic pop
 }
+
+#pragma GCC diagnostic warning "-Wformat-security"
 */
 import "C"
 
