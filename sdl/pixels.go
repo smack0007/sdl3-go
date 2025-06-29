@@ -92,6 +92,14 @@ func GetPixelFormatDetails(format PixelFormat) (*PixelFormatDetails, error) {
 	return result, PointerToError(unsafe.Pointer(result))
 }
 
+func GetPixelFormatName(format PixelFormat) string {
+	return C.GoString(
+		C.SDL_GetPixelFormatName(
+			C.SDL_PixelFormat(format),
+		),
+	)
+}
+
 func MapRGB(format *PixelFormatDetails, palette *Palette, r uint8, g uint8, b uint8) uint32 {
 	return uint32(
 		C.SDL_MapRGB(
