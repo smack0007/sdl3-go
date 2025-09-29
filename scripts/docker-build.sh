@@ -2,7 +2,7 @@
 set -e
 . "$(dirname $(realpath "${BASH_SOURCE[0]}"))/../env.sh"
 
-CONTAINER_NAME="smack0007/sdl-go"
+CONTAINER_NAME="smack0007/sdl3-go"
 
 cd ${REPO_PATH}
 docker build \
