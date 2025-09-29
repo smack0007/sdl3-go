@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 LABEL maintainer="Zachary Snow <zachary.snow+docker@gmail.com>"
 
 ARG GO_VERSION
