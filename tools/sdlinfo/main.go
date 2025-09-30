@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	SDL "github.com/smack0007/sdl-go/sdl"
+	SDL "github.com/smack0007/sdl3-go/sdl"
 )
 
 func main() {

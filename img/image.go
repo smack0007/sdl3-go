@@ -8,7 +8,7 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/smack0007/sdl-go/sdl"
+	"github.com/smack0007/sdl3-go/sdl"
 )
 
 func Load(file string) (*sdl.Surface, error) {

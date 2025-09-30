@@ -4,8 +4,8 @@ CP    := cp -u
 MKDIR := mkdir -p
 
 build:
-	go build -o ./bin/sdl-go/sdl ./sdl
-	go build -o ./bin/sdl-go/img ./img
+	go build -o ./bin/sdl3-go/sdl ./sdl
+	go build -o ./bin/sdl3-go/img ./img
 
 build-examples:
 	go build -o ./bin/examples/template ./examples/template.go

@@ -12,7 +12,7 @@ import (
 	"math/rand/v2"
 	"os"
 
-	"github.com/smack0007/sdl-go/sdl"
+	"github.com/smack0007/sdl3-go/sdl"
 )
 
 type AppState struct {

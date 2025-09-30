@@ -1,9 +1,9 @@
 name: CI
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 env:
   CI: 1
 jobs:
@@ -15,9 +15,8 @@ jobs:
         run: ./scripts/docker-run.sh "make build"
       - name: Build Examples
         run: ./scripts/docker-run.sh "make build-examples"
-      - name: Build sdl-go-template
+      - name: Build sdl3-go-template
         run: |
-          git clone --depth=1 https://github.com/smack0007/sdl-go-template.git ../sdl-go-template
-          DOCKER_FLAGS="-v ${PWD}/../sdl-go-template:/data/sdl-go-template -w /data/sdl-go-template" ./scripts/docker-run.sh "go mod tidy"
-          DOCKER_FLAGS="-v ${PWD}/../sdl-go-template:/data/sdl-go-template -w /data/sdl-go-template" ./scripts/docker-run.sh "make build" 
-          
+          git clone --depth=1 https://github.com/smack0007/sdl3-go-template.git ../sdl3-go-template
+          DOCKER_FLAGS="-v ${PWD}/../sdl3-go-template:/data/sdl3-go-template -w /data/sdl3-go-template" ./scripts/docker-run.sh "go mod tidy"
+          DOCKER_FLAGS="-v ${PWD}/../sdl3-go-template:/data/sdl3-go-template -w /data/sdl3-go-template" ./scripts/docker-run.sh "make build"

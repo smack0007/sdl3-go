@@ -4,7 +4,7 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/smack0007/sdl-go/sdl"
+	"github.com/smack0007/sdl3-go/sdl"
 )
 
 const (
