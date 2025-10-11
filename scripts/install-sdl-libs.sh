@@ -2,7 +2,8 @@
 set -e
 . "$(dirname $(realpath "${BASH_SOURCE[0]}"))/../env.sh"
 
-SUDO_CMD=${SUDO_CMD:sudo}
+# Allow Dockerfile to set SUDO_CMD= as the sudo command isn't needed in container.
+SUDO_CMD=${SUDO_CMD-sudo}
 
 BASE_SDL_URL="https://github.com/libsdl-org/"
 
