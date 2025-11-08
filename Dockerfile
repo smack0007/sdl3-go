@@ -21,13 +21,13 @@ COPY ./scripts/install-sdl-libs.sh ./scripts/install-sdl-libs.sh
 RUN set -eux; \
 	arch="$(dpkg --print-architecture)"; arch="${arch##*-}"; \
 	url="https://dl.google.com/go/go${GO_VERSION}.linux-$arch.tar.gz"; \
-    apt-get update && apt-get upgrade -qqy && apt-get install --no-install-recommends -y build-essential ca-certificates git make pkg-config wget; \
-    wget -O go.tgz "$url" --progress=dot:giga; \
-    tar -C /usr/local -xzf go.tgz; \
+  apt-get update && apt-get upgrade -qqy && apt-get install --no-install-recommends -y build-essential ca-certificates git make pkg-config wget; \
+  wget -O go.tgz "$url" --progress=dot:giga; \
+  tar -C /usr/local -xzf go.tgz; \
 	rm go.tgz; \
-    mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"; \
-    go version; \
-    SUDO_CMD= CLEANUP=1 /data/scripts/install-sdl-libs.sh; \
-    apt-get remove -y ca-certificates git wget && apt-get autoremove -y && apt-get autoclean -y; \
-    rm -rf /data/tmp && rm -rf /var/lib/apt/lists/*;
+  mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"; \
+  go version; \
+  SUDO_CMD= CLEANUP=1 /data/scripts/install-sdl-libs.sh; \
+  apt-get remove -y ca-certificates git wget && apt-get autoremove -y && apt-get autoclean -y; \
+  rm -rf /data/tmp && rm -rf /var/lib/apt/lists/*;
     
