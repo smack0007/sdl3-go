@@ -1,3 +1,3 @@
 module github.com/smack0007/sdl3-go
 
-go 1.25.2
+go 1.25.4
