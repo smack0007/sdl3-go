@@ -82,6 +82,14 @@ func BytesPerPixel(format PixelFormat) uint8 {
 	return (uint8)(C._SDL_BytesPerPixel((C.SDL_PixelFormat)(format)))
 }
 
+func GetPixelFormatName(format PixelFormat) string {
+	return (string)(C.GoString(
+		C.SDL_GetPixelFormatName(
+			C.SDL_PixelFormat(format),
+		),
+	))
+}
+
 func GetPixelFormatDetails(format PixelFormat) (*PixelFormatDetails, error) {
 	result := (*PixelFormatDetails)(
 		C.SDL_GetPixelFormatDetails(
