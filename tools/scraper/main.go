@@ -319,6 +319,8 @@ func writeFuncs(output string, funcs []string) string {
 
 			if isPointer(mappedReturnType) {
 				funcOutput += "(" + mappedReturnType + ")(unsafe.Pointer(\n"
+			} else if mappedReturnType == "string" {
+				funcOutput += "(string)(C.GoString(\n"
 			} else {
 				funcOutput += mappedReturnType + "(\n"
 			}
@@ -360,6 +362,8 @@ func writeFuncs(output string, funcs []string) string {
 			} else if mapErrorFunc == "PointerToError" {
 				funcOutput += "))\n\n"
 				funcOutput += indent(indentLevel) + "return result, PointerToError(unsafe.Pointer(result))\n"
+			} else if mappedReturnType == "string" {
+				funcOutput += "))\n"
 			} else {
 				funcOutput += ")\n"
 			}
