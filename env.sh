@@ -1,8 +1,8 @@
 REPO_PATH="$(dirname $(realpath "${BASH_SOURCE[0]}"))"
 GO_VERSION="$(cat go.mod | grep -Ei "go ([0-9\.]+)" | grep -oEi '[0-9\.]+')"
-SDL_VERSION="3.2.26"
+SDL_VERSION="3.4.2"
 SDL_TAG="release-${SDL_VERSION}"
-SDL_IMAGE_VERSION="3.2.4"
+SDL_IMAGE_VERSION="3.4.0"
 SDL_IMAGE_TAG="release-${SDL_IMAGE_VERSION}"
 TMP_DIR="${REPO_PATH}/tmp"
 
